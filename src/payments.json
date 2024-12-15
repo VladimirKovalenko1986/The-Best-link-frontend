@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "cardNumber": "1234 5678 9812 3456",
+    "cardType": "Visa",
+    "cardOwner": "Volodymyr Kovalenko",
+    "date": "2024-01-01",
+    "amount": 100,
+    "isPaid": true
+  },
+  {
+    "id": "2",
+    "cardNumber": "3333 4444 5555 6666",
+    "cardType": "Master Card",
+    "cardOwner": "Uriy Pletianiy",
+    "date": "2024-02-03",
+    "amount": 200,
+    "isPaid": false
+  },
+  {
+    "id": "3",
+    "cardNumber": "6666 7777 8888 9999",
+    "cardType": "American Express",
+    "cardOwner": "Yulia Dusanskay",
+    "date": "2024-05-05",
+    "amount": 400,
+    "isPaid": true
+  }
+]
