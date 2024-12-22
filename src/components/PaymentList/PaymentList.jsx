@@ -1,4 +1,4 @@
-import PaymentCard from "./PaymentCard.jsx";
+import PaymentCard from "../PaymentCard/PaymentCard.jsx";
 
 function PaymentList({ item }) {
   return (

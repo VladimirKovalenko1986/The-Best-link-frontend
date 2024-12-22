@@ -1,0 +1,15 @@
+.conteiner {
+  padding: 20px;
+}
+
+.text {
+  margin: 0;
+}
+
+.isPaid {
+  color: green;
+}
+
+.isPending {
+  color: orangered;
+}
