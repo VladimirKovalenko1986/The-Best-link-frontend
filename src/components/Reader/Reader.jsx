@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Controls from "../Controls/Controls.jsx";
 import Progress from "../Progress/Progress.jsx";
 import ArticleView from "../ArticleView/ArticleView.jsx";
 
 export default function Reader({ items }) {
-  const [selectedIdx, setSelectedIdx] = useState(0);
+  const initialIdx = () => {
+    const sevedIdx = localStorage.getItem("articles-idx");
+    return sevedIdx !== null ? JSON.parse(sevedIdx) : 0;
+  };
+  const [selectedIdx, setSelectedIdx] = useState(initialIdx);
+
+  useEffect(() => {
+    localStorage.setItem("articles-idx", selectedIdx);
+  }, [selectedIdx]);
 
   const handlerPrev = () => {
     setSelectedIdx(selectedIdx - 1);
