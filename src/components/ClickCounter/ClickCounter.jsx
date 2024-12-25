@@ -21,7 +21,7 @@ export default function ClickCounter() {
 
   return (
     <div>
-      <button onClick={handleClick}>Click {clicks}</button>
+      <button onClick={handleClick}>Clicks {clicks}</button>
       <button onClick={resetClicks}>Reset cliks</button>
     </div>
   );
