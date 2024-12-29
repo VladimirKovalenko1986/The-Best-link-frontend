@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 // import PaymentList from "../PaymentList/PaymentList.jsx";
 // import payments from "../../payments.json";
 // import Reader from "../Reader/Reader.jsx";
@@ -8,37 +8,38 @@ import { useState } from "react";
 // import TextInput from "../TextInput/TextInput.jsx";
 // import LangSwitcher from "../LongSwitcher/LangSwitcher.jsx";
 // import OrderForm from "../OrderForm/OrderForm.jsx";
-import initialTasks from "../../tasks.json";
-import Filter from "../Filter/Filter.jsx";
-import Form from "../Form/Form.jsx";
-import TaskList from "../TaskList/TaskList.jsx";
+// import initialTasks from "../../tasks.json";
+// import Filter from "../Filter/Filter.jsx";
+// import Form from "../Form/Form.jsx";
+// import TaskList from "../TaskList/TaskList.jsx";
+import UserFormFormik from "../UserFormFormik/UserFormFormik.jsx";
 import css from "./App.module.css";
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [filter, setFilter] = useState("");
+  // const [tasks, setTasks] = useState(initialTasks);
+  // const [filter, setFilter] = useState("");
   // const [inputValue, setInputValue] = useState("");
   // const [lang, setLang] = useState("uk");
 
-  const addTask = (newTask) => {
-    setTasks((prevTasks) => {
-      return [...prevTasks, newTask];
-    });
-  };
-
-  const deleteTask = (taskId) => {
-    setTasks((prevTasks) => {
-      return prevTasks.filter((task) => task.id !== taskId);
-    });
-  };
-
-  const visibleTasks = tasks.filter((task) =>
-    task.text.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
-  );
-
-  // const handleAddUser = (newUser) => {
-  //   console.log("handleAddUser", newUser);
+  // const addTask = (newTask) => {
+  //   setTasks((prevTasks) => {
+  //     return [...prevTasks, newTask];
+  //   });
   // };
+
+  // const deleteTask = (taskId) => {
+  //   setTasks((prevTasks) => {
+  //     return prevTasks.filter((task) => task.id !== taskId);
+  //   });
+  // };
+
+  // const visibleTasks = tasks.filter((task) =>
+  //   task.text.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
+  // );
+
+  const handleAddUser = (newUser) => {
+    console.log("handleAddUser", newUser);
+  };
 
   // const handleFormOrder = (newOrder) => {
   //   console.log("handleFormOrder", newOrder);
@@ -63,12 +64,15 @@ function App() {
       {/* Form контрольована */}
       {/* <OrderForm onOrder={handleFormOrder} /> */}
 
-      {/* Colections elements */}
-      <div className={css.conteiner}>
+      {/* Colections elements controls fom and controls element*/}
+      {/* <div className={css.conteiner}>
         <Form onAdd={addTask} />
         <Filter value={filter} onFilter={setFilter} />
         <TaskList tasks={visibleTasks} onDelete={deleteTask} />
-      </div>
+      </div> */}
+
+      {/* Formik */}
+      <UserFormFormik onAdd={handleAddUser} />
     </div>
   );
 }
