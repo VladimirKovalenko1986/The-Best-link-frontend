@@ -15,3 +15,8 @@
   color: red;
   text-align: center;
 }
+
+.btn {
+  width: 150px;
+  cursor: pointer;
+}
