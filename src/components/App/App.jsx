@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // import PaymentList from "../PaymentList/PaymentList.jsx";
 // import payments from "../../payments.json";
 // import Reader from "../Reader/Reader.jsx";
@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // import ClickCounter from "../ClickCounter/ClickCounter.jsx";
 // import UserForm from "../userForm/userForm.jsx";
 // import TextInput from "../TextInput/TextInput.jsx";
-// import LangSwitcher from "../LongSwitcher/LangSwitcher.jsx";
+import LangSwitcher from "../LongSwitcher/LangSwitcher.jsx";
 // import OrderForm from "../OrderForm/OrderForm.jsx";
 // import initialTasks from "../../tasks.json";
 // import Filter from "../Filter/Filter.jsx";
@@ -17,14 +17,23 @@ import { fetchArticles } from "../../articles-api.js";
 import ArticleList from "../ArticleList/ArticleList.jsx";
 import SearchForm from "../../SearchForm/SearchForm.jsx";
 import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
+// import RefBasic from "../RefBasic/RefBasic.jsx";
+// import RefExample from "../RefExample/RefExample.jsx";
+// import TimerRef from "../TimerRef/TimerRef.jsx";
+import { langContext, useLang } from "../context/langContext.jsx";
 import css from "./App.module.css";
 
 function App() {
-  const [articles, setArticles] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const { lang } = useLang();
+  // console.log(langUseHuck);
+  // const langCtxValue = useContext(langContext);
+  // console.log(langCtxValue);
+
+  // const [articles, setArticles] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(false);
+  // const [query, setQuery] = useState("");
+  // const [page, setPage] = useState(1);
 
   // Якщо реба щоб завантажувалось відразу
   // useEffect(() => {
@@ -44,42 +53,42 @@ function App() {
   //   getArticles();
   // }, []);
 
-  const hendleSearchForm = (newSearch) => {
-    setQuery(newSearch);
-    setPage(1);
-    setArticles([]);
-  };
+  // const hendleSearchForm = (newSearch) => {
+  //   setQuery(newSearch);
+  //   setPage(1);
+  //   setArticles([]);
+  // };
 
-  const handleLoadMore = () => {
-    setPage(page + 1);
-  };
+  // const handleLoadMore = () => {
+  //   setPage(page + 1);
+  // };
 
-  useEffect(() => {
-    if (query === "") {
-      return;
-    }
-    async function getArticles() {
-      try {
-        setError(false);
-        setIsLoading(true);
-        const data = await fetchArticles(query, page);
-        setArticles((prevArticles) => {
-          return [...prevArticles, ...data];
-        });
-      } catch (error) {
-        console.log(error.message);
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getArticles();
-  }, [query, page]);
+  // useEffect(() => {
+  //   if (query === "") {
+  //     return;
+  //   }
+  //   async function getArticles() {
+  //     try {
+  //       setError(false);
+  //       setIsLoading(true);
+  //       const data = await fetchArticles(query, page);
+  //       setArticles((prevArticles) => {
+  //         return [...prevArticles, ...data];
+  //       });
+  //     } catch (error) {
+  //       console.log(error.message);
+  //       setError(true);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   getArticles();
+  // }, [query, page]);
 
   // const [tasks, setTasks] = useState(initialTasks);
   // const [filter, setFilter] = useState("");
   // const [inputValue, setInputValue] = useState("");
-  // const [lang, setLang] = useState("uk");
+  // const [langSwitch, setLangSwitch] = useState("uk");
 
   // const addTask = (newTask) => {
   //   setTasks((prevTasks) => {
@@ -130,8 +139,8 @@ function App() {
       {/* <TextInput value={inputValue} onType={setInputValue} /> */}
       {/* <p>{inputValue}</p> */}
       {/* Контрольований елемент */}
-      {/* <LangSwitcher value={lang} onChangeLang={setLang} /> */}
-      {/* <p className={css.text}>Selected lang: {lang}</p> */}
+      <LangSwitcher />
+      <p className={css.text}>Selected lang: {lang}</p>
       {/* Form контрольована */}
       {/* <OrderForm onOrder={handleFormOrder} /> */}
       {/* Colections elements controls fom and controls element*/}
@@ -142,9 +151,9 @@ function App() {
       </div> */}
       {/* Formik */}
       {/* <UserFormFormik onAdd={handleAddUser} /> */}
-      {/* Запити */}
 
-      <h1>HTTP requests in React</h1>
+      {/* Запити */}
+      {/* <h1>HTTP requests in React</h1>
       <SearchForm onSearch={hendleSearchForm} />
       {error && <b>Ooops! There was an error! Please reload!</b>}
       {isLoading && <DiscussLoading />}
@@ -153,7 +162,14 @@ function App() {
         <button className={css.btn} onClick={handleLoadMore}>
           Load more articles
         </button>
-      )}
+      )} */}
+
+      {/* useMemo, useRef, context, власні хуки */}
+      {/* <RefBasic /> */}
+      {/* <RefExample /> */}
+      {/* <TimerRef /> */}
+      {/* <p>{langCtxValue.lang}</p> */}
+      <p>Selected lang: {lang}</p>
     </div>
   );
 }
