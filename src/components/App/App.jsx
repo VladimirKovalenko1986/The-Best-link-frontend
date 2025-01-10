@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+// import { useState, useEffect, useContext } from "react";
 // import PaymentList from "../PaymentList/PaymentList.jsx";
 // import payments from "../../payments.json";
 // import Reader from "../Reader/Reader.jsx";
@@ -6,25 +6,51 @@ import { useState, useEffect, useContext } from "react";
 // import ClickCounter from "../ClickCounter/ClickCounter.jsx";
 // import UserForm from "../userForm/userForm.jsx";
 // import TextInput from "../TextInput/TextInput.jsx";
-import LangSwitcher from "../LongSwitcher/LangSwitcher.jsx";
+// import LangSwitcher from "../LongSwitcher/LangSwitcher.jsx";
 // import OrderForm from "../OrderForm/OrderForm.jsx";
 // import initialTasks from "../../tasks.json";
 // import Filter from "../Filter/Filter.jsx";
 // import Form from "../Form/Form.jsx";
 // import TaskList from "../TaskList/TaskList.jsx";
 // import UserFormFormik from "../UserFormFormik/UserFormFormik.jsx";
-import { fetchArticles } from "../../articles-api.js";
-import ArticleList from "../ArticleList/ArticleList.jsx";
-import SearchForm from "../../SearchForm/SearchForm.jsx";
-import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
+// import { fetchArticles } from "../../articles-api.js";
+// import ArticleList from "../ArticleList/ArticleList.jsx";
+// import SearchForm from "../../SearchForm/SearchForm.jsx";
+// import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
 // import RefBasic from "../RefBasic/RefBasic.jsx";
 // import RefExample from "../RefExample/RefExample.jsx";
 // import TimerRef from "../TimerRef/TimerRef.jsx";
-import { langContext, useLang } from "../context/langContext.jsx";
+// import { langContext, useLang } from "../context/langContext.jsx";
+// import Modal from "../Modal/Modal.jsx";
+import { Routes, Route } from "react-router-dom";
+import Layout from "../Layout/Layout.jsx";
+import HomePage from "../../pages/HomePage/HomePage.jsx";
+import PaymentsPage from "../../pages/PaymentsPage/PaymentsPage.jsx";
+import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
+import PaymentDetailsPage from "../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx";
+import { getPaymentId } from "../../payments-api.js";
+import Bank from "../Bank/Bank.jsx";
+import Receipt from "../Receipt/Receipt.jsx";
 import css from "./App.module.css";
 
 function App() {
-  const { lang } = useLang();
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const openModal = () => setIsModalOpen(true);
+  // const closeModal = () => setIsModalOpen(false);
+
+  // Щоб не рухався backDrop
+  // useEffect(() => {
+  //   if (isModalOpen) {
+  //     document.body.classList.add("no-scroll");
+  //   } else {
+  //     document.body.classList.remove("no-scroll");
+  //   }
+
+  // Очищення ефекту при розмонтуванні
+  //   return () => document.body.classList.remove("no-scroll");
+  // }, [isModalOpen]);
+
+  // const { lang } = useLang();
   // console.log(langUseHuck);
   // const langCtxValue = useContext(langContext);
   // console.log(langCtxValue);
@@ -125,6 +151,7 @@ function App() {
   //     setIsLoading(false);
   //   }
 
+  getPaymentId(15316175);
   return (
     <div className={css.conteiner}>
       {/* Props */}
@@ -139,8 +166,8 @@ function App() {
       {/* <TextInput value={inputValue} onType={setInputValue} /> */}
       {/* <p>{inputValue}</p> */}
       {/* Контрольований елемент */}
-      <LangSwitcher />
-      <p className={css.text}>Selected lang: {lang}</p>
+      {/* <LangSwitcher />
+      <p className={css.text}>Selected lang: {lang}</p> */}
       {/* Form контрольована */}
       {/* <OrderForm onOrder={handleFormOrder} /> */}
       {/* Colections elements controls fom and controls element*/}
@@ -169,7 +196,28 @@ function App() {
       {/* <RefExample /> */}
       {/* <TimerRef /> */}
       {/* <p>{langCtxValue.lang}</p> */}
-      <p>Selected lang: {lang}</p>
+      {/* <p>Selected lang: {lang}</p> */}
+
+      {/* Modal windiw */}
+      {/* <div>
+        <button className={css.btn} onClick={openModal}>
+          Open modal
+        </button>
+        {isModalOpen && <Modal onClose={closeModal} isOpen={isModalOpen} />}
+      </div> */}
+
+      {/* Routers */}
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/payments" element={<PaymentsPage />} />
+          <Route path="/payments/:paymentId" element={<PaymentDetailsPage />}>
+            <Route path="bank" element={<Bank />} />
+            <Route path="receipt" element={<Receipt />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Layout>
     </div>
   );
 }

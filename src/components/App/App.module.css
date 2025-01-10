@@ -20,3 +20,7 @@
   width: 150px;
   cursor: pointer;
 }
+
+.no-scroll {
+  overflow: hidden;
+}

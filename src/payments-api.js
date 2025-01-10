@@ -2,15 +2,18 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://hn.algolia.com/api/v1";
 
-export const fetchArticles = async (searchQuery, currentPage) => {
-  //   const response = await axios.get(`/search?query=${searchQuery}`);
+export const getPayments = async () => {
   const response = await axios.get("/search", {
     params: {
-      query: searchQuery,
+      query: "react",
       hitsPerPage: 10,
-      page: currentPage,
     },
   });
 
   return response.data.hits;
+};
+
+export const getPaymentId = async (id) => {
+  const response = await axios.get(`/items/${id}`);
+  return response.data;
 };
