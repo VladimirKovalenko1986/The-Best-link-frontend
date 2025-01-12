@@ -22,16 +22,31 @@
 // import TimerRef from "../TimerRef/TimerRef.jsx";
 // import { langContext, useLang } from "../context/langContext.jsx";
 // import Modal from "../Modal/Modal.jsx";
+import { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../Layout/Layout.jsx";
-import HomePage from "../../pages/HomePage/HomePage.jsx";
-import PaymentsPage from "../../pages/PaymentsPage/PaymentsPage.jsx";
-import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
-import PaymentDetailsPage from "../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx";
+// import HomePage from "../../pages/HomePage/HomePage.jsx";
+// import PaymentsPage from "../../pages/PaymentsPage/PaymentsPage.jsx";
+// import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
+// import PaymentDetailsPage from "../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx";
 import { getPaymentId } from "../../payments-api.js";
-import Bank from "../Bank/Bank.jsx";
-import Receipt from "../Receipt/Receipt.jsx";
+// import Bank from "../Bank/Bank.jsx";
+// import Receipt from "../Receipt/Receipt.jsx";
 import css from "./App.module.css";
+
+const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
+const PaymentsPage = lazy(() =>
+  import("../../pages/PaymentsPage/PaymentsPage.jsx")
+);
+const PaymentDetailsPage = lazy(() =>
+  import("../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx")
+);
+const NotFoundPage = lazy(() =>
+  import("../../pages/NotFoundPage/NotFoundPage.jsx")
+);
+
+const Bank = lazy(() => import("../Bank/Bank.jsx"));
+const Receipt = lazy(() => import("../Receipt/Receipt.jsx"));
 
 function App() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
