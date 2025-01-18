@@ -22,31 +22,34 @@
 // import TimerRef from "../TimerRef/TimerRef.jsx";
 // import { langContext, useLang } from "../context/langContext.jsx";
 // import Modal from "../Modal/Modal.jsx";
-import { lazy } from "react";
-import { Routes, Route } from "react-router-dom";
-import Layout from "../Layout/Layout.jsx";
+// import { lazy } from "react";
+// import { Routes, Route } from "react-router-dom";
+// import Layout from "../Layout/Layout.jsx";
 // import HomePage from "../../pages/HomePage/HomePage.jsx";
 // import PaymentsPage from "../../pages/PaymentsPage/PaymentsPage.jsx";
 // import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
 // import PaymentDetailsPage from "../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx";
-import { getPaymentId } from "../../payments-api.js";
+// import { getPaymentId } from "../../payments-api.js";
 // import Bank from "../Bank/Bank.jsx";
 // import Receipt from "../Receipt/Receipt.jsx";
+// import { useSelector } from "react-redux";
+// import Balance from "../Balance/Balance.jsx";
+// import LangRedux from "../LangRedux/LangRedux.jsx";
 import css from "./App.module.css";
 
-const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
-const PaymentsPage = lazy(() =>
-  import("../../pages/PaymentsPage/PaymentsPage.jsx")
-);
-const PaymentDetailsPage = lazy(() =>
-  import("../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx")
-);
-const NotFoundPage = lazy(() =>
-  import("../../pages/NotFoundPage/NotFoundPage.jsx")
-);
+// const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
+// const PaymentsPage = lazy(() =>
+//   import("../../pages/PaymentsPage/PaymentsPage.jsx")
+// );
+// const PaymentDetailsPage = lazy(() =>
+//   import("../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx")
+// );
+// const NotFoundPage = lazy(() =>
+//   import("../../pages/NotFoundPage/NotFoundPage.jsx")
+// );
 
-const Bank = lazy(() => import("../Bank/Bank.jsx"));
-const Receipt = lazy(() => import("../Receipt/Receipt.jsx"));
+// const Bank = lazy(() => import("../Bank/Bank.jsx"));
+// const Receipt = lazy(() => import("../Receipt/Receipt.jsx"));
 
 function App() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -166,7 +169,8 @@ function App() {
   //     setIsLoading(false);
   //   }
 
-  getPaymentId(15316175);
+  // const lang = useSelector((state) => state.locale.lang);
+
   return (
     <div className={css.conteiner}>
       {/* Props */}
@@ -222,7 +226,7 @@ function App() {
       </div> */}
 
       {/* Routers */}
-      <Layout>
+      {/* <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/payments" element={<PaymentsPage />} />
@@ -232,7 +236,14 @@ function App() {
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </Layout>
+      </Layout> */}
+
+      {/* REDUX */}
+      {/* <Balance />
+      <LangRedux />
+      <p>Selected lang: {lang}</p> */}
+
+      {/* REDUX TOOLKIT */}
     </div>
   );
 }
