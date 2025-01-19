@@ -32,9 +32,9 @@
 // import { getPaymentId } from "../../payments-api.js";
 // import Bank from "../Bank/Bank.jsx";
 // import Receipt from "../Receipt/Receipt.jsx";
-// import { useSelector } from "react-redux";
-// import Balance from "../Balance/Balance.jsx";
-// import LangRedux from "../LangRedux/LangRedux.jsx";
+import { useSelector } from "react-redux";
+import Balance from "../Balance/Balance.jsx";
+import LangRedux from "../LangRedux/LangRedux.jsx";
 import css from "./App.module.css";
 
 // const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
@@ -169,7 +169,7 @@ function App() {
   //     setIsLoading(false);
   //   }
 
-  // const lang = useSelector((state) => state.locale.lang);
+  const lang = useSelector((state) => state.locale.lang);
 
   return (
     <div className={css.conteiner}>
@@ -239,9 +239,9 @@ function App() {
       </Layout> */}
 
       {/* REDUX */}
-      {/* <Balance />
+      <Balance />
       <LangRedux />
-      <p>Selected lang: {lang}</p> */}
+      <p>Selected lang: {lang}</p>
 
       {/* REDUX TOOLKIT */}
     </div>
