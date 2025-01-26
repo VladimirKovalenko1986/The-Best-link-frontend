@@ -31,15 +31,15 @@ import { createAction, createReducer, createSlice } from "@reduxjs/toolkit";
 
 // Slice REDUX TOOLKIT
 
-const slice = createSlice({
-  name: "locale",
-  initialState: { lang: "uk" },
-  reducers: {
-    changeLang: (state, action) => {
-      state.lang = action.payload;
-    },
-  },
-});
+// const slice = createSlice({
+//   name: "locale",
+//   initialState: { lang: "uk" },
+//   reducers: {
+//     changeLang: (state, action) => {
+//       state.lang = action.payload;
+//     },
+//   },
+// });
 
-export const { changeLang } = slice.actions;
-export default slice.reducer;
+// export const { changeLang } = slice.actions;
+// export default slice.reducer;

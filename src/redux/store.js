@@ -1,7 +1,7 @@
 // REDUX
 // import { createStore, combineReducers } from "redux";
-import balanceReducer from "./balanceSlice.js";
-import localeReducer from "./localeSlice.js";
+// import balanceReducer from "./balanceSlice.js";
+// import localeReducer from "./localeSlice.js";
 
 // const rootReducer = combineReducers({
 //   balance: balanceReducer,
@@ -44,38 +44,49 @@ import localeReducer from "./localeSlice.js";
 // export const store = createStore(rootReducer);
 
 // REDUX TOOLKIT
+// import { configureStore } from "@reduxjs/toolkit";
+// import {
+//   persistStore,
+//   persistReducer,
+//   FLUSH,
+//   REHYDRATE,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+
+// const balancePersistConfig = {
+//   key: "balanceValue",
+//   storage,
+//   whitelist: ["value"],
+// };
+
+// const pBalanceReducer = persistReducer(balancePersistConfig, balanceReducer);
+
+// export const store = configureStore({
+//   reducer: {
+//     balance: pBalanceReducer,
+//     locale: localeReducer,
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+// });
+
+// export const persistor = persistStore(store);
+
+/* Async REDUX */
+
 import { configureStore } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
-
-const balancePersistConfig = {
-  key: "balanceValue",
-  storage,
-  whitelist: ["value"],
-};
-
-const pBalanceReducer = persistReducer(balancePersistConfig, balanceReducer);
+import taskReducer from "../redux/tasksSlice.js";
 
 export const store = configureStore({
   reducer: {
-    balance: pBalanceReducer,
-    locale: localeReducer,
+    tasks: taskReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
 });
-
-export const persistor = persistStore(store);

@@ -32,10 +32,15 @@
 // import { getPaymentId } from "../../payments-api.js";
 // import Bank from "../Bank/Bank.jsx";
 // import Receipt from "../Receipt/Receipt.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Balance from "../Balance/Balance.jsx";
 import LangRedux from "../LangRedux/LangRedux.jsx";
+import TaskFormRedux from "../TaskFormRedux/TaskFormRedux.jsx";
+import TaskListRedux from "../TaskListRedux/TaskListRedux.jsx";
 import css from "./App.module.css";
+import { useEffect } from "react";
+import { fetchTasks } from "../../redux/taskOps.js";
+import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
 
 // const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
 // const PaymentsPage = lazy(() =>
@@ -169,7 +174,15 @@ function App() {
   //     setIsLoading(false);
   //   }
 
-  const lang = useSelector((state) => state.locale.lang);
+  // const lang = useSelector((state) => state.locale.lang);
+
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.tasks.loading);
+  const isError = useSelector((state) => state.tasks.error);
+
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, [dispatch]);
 
   return (
     <div className={css.conteiner}>
@@ -197,7 +210,6 @@ function App() {
       </div> */}
       {/* Formik */}
       {/* <UserFormFormik onAdd={handleAddUser} /> */}
-
       {/* Запити */}
       {/* <h1>HTTP requests in React</h1>
       <SearchForm onSearch={hendleSearchForm} />
@@ -209,14 +221,12 @@ function App() {
           Load more articles
         </button>
       )} */}
-
       {/* useMemo, useRef, context, власні хуки */}
       {/* <RefBasic /> */}
       {/* <RefExample /> */}
       {/* <TimerRef /> */}
       {/* <p>{langCtxValue.lang}</p> */}
       {/* <p>Selected lang: {lang}</p> */}
-
       {/* Modal windiw */}
       {/* <div>
         <button className={css.btn} onClick={openModal}>
@@ -224,7 +234,6 @@ function App() {
         </button>
         {isModalOpen && <Modal onClose={closeModal} isOpen={isModalOpen} />}
       </div> */}
-
       {/* Routers */}
       {/* <Layout>
         <Routes>
@@ -237,13 +246,15 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout> */}
-
-      {/* REDUX */}
-      <Balance />
+      {/* REDUX && REDUX TOOLKIT */}
+      {/* <Balance />
       <LangRedux />
-      <p>Selected lang: {lang}</p>
-
-      {/* REDUX TOOLKIT */}
+      <p>Selected lang: {lang}</p> */}
+      {/* Async REDUX */}
+      <TaskFormRedux />
+      {isLoading && <DiscussLoading />}
+      {isError && <b>Ooops! There was an error! Please reload!</b>}
+      <TaskListRedux />
     </div>
   );
 }
