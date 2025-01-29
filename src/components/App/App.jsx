@@ -41,6 +41,8 @@ import css from "./App.module.css";
 import { useEffect } from "react";
 import { fetchTasks } from "../../redux/taskOps.js";
 import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
+import FilterRedux from "../FilterRedux/FilterRedux.jsx";
+import { selectLoading, selectError } from "../../redux/tasksSlice.js";
 
 // const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
 // const PaymentsPage = lazy(() =>
@@ -177,8 +179,8 @@ function App() {
   // const lang = useSelector((state) => state.locale.lang);
 
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.tasks.loading);
-  const isError = useSelector((state) => state.tasks.error);
+  const isLoading = useSelector(selectLoading);
+  const isError = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -252,6 +254,7 @@ function App() {
       <p>Selected lang: {lang}</p> */}
       {/* Async REDUX */}
       <TaskFormRedux />
+      <FilterRedux />
       {isLoading && <DiscussLoading />}
       {isError && <b>Ooops! There was an error! Please reload!</b>}
       <TaskListRedux />

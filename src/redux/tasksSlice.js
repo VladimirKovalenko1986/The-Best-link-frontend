@@ -1,12 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { fetchTasks, addTask, deleteTask } from "./taskOps.js";
+import { selectTextFilter } from "./filtersSlice.js";
 
 const slice = createSlice({
   name: "tasks",
   initialState: {
     items: [],
     loading: false,
-    error: false,
+    error: null,
   },
   extraReducers: (builder) =>
     builder
@@ -15,10 +16,11 @@ const slice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.items = action.payload;
+        state.error = null;
         state.loading = false;
       })
-      .addCase(fetchTasks.rejected, (state) => {
-        state.error = true;
+      .addCase(fetchTasks.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(addTask.pending, (state) => {
@@ -26,10 +28,11 @@ const slice = createSlice({
       })
       .addCase(addTask.fulfilled, (state, action) => {
         state.items.push(action.payload);
+        state.error = null;
         state.loading = false;
       })
-      .addCase(addTask.rejected, (state) => {
-        state.error = true;
+      .addCase(addTask.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(deleteTask.pending, (state) => {
@@ -39,12 +42,28 @@ const slice = createSlice({
         state.items = state.items.filter(
           (item) => item.id !== action.payload.id
         );
+        state.error = null;
         state.loading = false;
       })
-      .addCase(deleteTask.rejected, (state) => {
-        state.error = true;
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
       }),
 });
+
+export const selectTasks = (state) => state.tasks.items;
+
+export const selectLoading = (state) => state.tasks.loading;
+
+export const selectError = (state) => state.tasks.error;
+
+export const selectVisibleTasks = createSelector(
+  [selectTasks, selectTextFilter],
+  (tasks, textFilter) => {
+    return tasks.filter((task) =>
+      task.text.toLowerCase().includes(textFilter.toLowerCase())
+    );
+  }
+);
 
 export default slice.reducer;

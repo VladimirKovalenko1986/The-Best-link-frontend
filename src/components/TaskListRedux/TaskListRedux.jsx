@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import TaskRedux from "../TaskRedux/TaskRedux.jsx";
+import { selectVisibleTasks } from "../../redux/tasksSlice.js";
 
 export default function TaskListRedux() {
-  const tasks = useSelector((state) => state.tasks.items);
+  const tasks = useSelector(selectVisibleTasks);
+
   return (
     <ul>
       {tasks.map((task) => (
