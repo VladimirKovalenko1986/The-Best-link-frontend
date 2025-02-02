@@ -1,12 +1,9 @@
 .conteiner {
-  padding: 20px;
   display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
+  justify-content: center;
 }
 
-.title {
+/* .title {
   font-size: 24px;
 }
 
@@ -23,4 +20,4 @@
 
 .no-scroll {
   overflow: hidden;
-}
+} */

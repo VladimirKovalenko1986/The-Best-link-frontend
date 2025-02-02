@@ -7,7 +7,7 @@ import App from "./components/App/App.jsx";
 import { LangProvider } from "./components/context/langContext.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
+// import { PersistGate } from "redux-persist/integration/react";
 // import { store, persistor } from "./redux/store.js";
 import { store } from "./redux/store.js";
 

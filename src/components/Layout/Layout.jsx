@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import Navigation from "../Navigation/Navigation.jsx";
+import AppBar from "../AppBar/AppBar.jsx";
 import css from "./Layout.module.css";
 
 export default function Layout({ children }) {
   return (
     <div className={css.conteiner}>
-      <Navigation />
+      <AppBar />
       <Suspense fallback={<div>Loading content...</div>}>{children}</Suspense>
     </div>
   );

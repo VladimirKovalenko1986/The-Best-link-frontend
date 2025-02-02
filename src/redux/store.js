@@ -83,12 +83,16 @@
 /* Async REDUX */
 
 import { configureStore } from "@reduxjs/toolkit";
-import taskReducer from "../redux/tasksSlice.js";
-import filtersSlice from "../redux/filtersSlice";
+import taskReducer from "./tasks/slice.js";
+import authReducer from "./auth/slice.js";
+// import filtersSlice from "../redux/filtersSlice";
 
 export const store = configureStore({
   reducer: {
     tasks: taskReducer,
-    filters: filtersSlice,
+    auth: authReducer,
+    // filters: filtersSlice,
   },
 });
+
+/* Login && SignUp */

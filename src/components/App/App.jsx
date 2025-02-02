@@ -22,9 +22,9 @@
 // import TimerRef from "../TimerRef/TimerRef.jsx";
 // import { langContext, useLang } from "../context/langContext.jsx";
 // import Modal from "../Modal/Modal.jsx";
-// import { lazy } from "react";
+import { lazy } from "react";
 // import { Routes, Route } from "react-router-dom";
-// import Layout from "../Layout/Layout.jsx";
+import Layout from "../Layout/Layout.jsx";
 // import HomePage from "../../pages/HomePage/HomePage.jsx";
 // import PaymentsPage from "../../pages/PaymentsPage/PaymentsPage.jsx";
 // import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage.jsx";
@@ -32,28 +32,33 @@
 // import { getPaymentId } from "../../payments-api.js";
 // import Bank from "../Bank/Bank.jsx";
 // import Receipt from "../Receipt/Receipt.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import Balance from "../Balance/Balance.jsx";
-import LangRedux from "../LangRedux/LangRedux.jsx";
-import TaskFormRedux from "../TaskFormRedux/TaskFormRedux.jsx";
-import TaskListRedux from "../TaskListRedux/TaskListRedux.jsx";
+// import { useDispatch, useSelector } from "react-redux";
+// import Balance from "../Balance/Balance.jsx";
+// import LangRedux from "../LangRedux/LangRedux.jsx";
+// import TaskFormRedux from "../TaskFormRedux/TaskFormRedux.jsx";
+// import TaskListRedux from "../TaskListRedux/TaskListRedux.jsx";
 import css from "./App.module.css";
-import { useEffect } from "react";
-import { fetchTasks } from "../../redux/taskOps.js";
-import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
-import FilterRedux from "../FilterRedux/FilterRedux.jsx";
-import { selectLoading, selectError } from "../../redux/tasksSlice.js";
+import { Route, Routes } from "react-router-dom";
+// import { useEffect } from "react";
+// import { fetchTasks } from "../../redux/taskOps.js";
+// import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
+// import FilterRedux from "../FilterRedux/FilterRedux.jsx";
+// import { selectLoading, selectError } from "../../redux/tasksSlice.js";
 
-// const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
+const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
+const LinksPage = lazy(() => import("../../pages/LinksPage/LinksPage.jsx"));
+const RegisterPage = lazy(() =>
+  import("../../pages/RegisterPage/RegisterPage.jsx")
+);
 // const PaymentsPage = lazy(() =>
 //   import("../../pages/PaymentsPage/PaymentsPage.jsx")
 // );
 // const PaymentDetailsPage = lazy(() =>
 //   import("../../pages/PaymentDetailsPage/PaymentDetailsPage.jsx")
 // );
-// const NotFoundPage = lazy(() =>
-//   import("../../pages/NotFoundPage/NotFoundPage.jsx")
-// );
+const NotFoundPage = lazy(() =>
+  import("../../pages/NotFoundPage/NotFoundPage.jsx")
+);
 
 // const Bank = lazy(() => import("../Bank/Bank.jsx"));
 // const Receipt = lazy(() => import("../Receipt/Receipt.jsx"));
@@ -178,13 +183,13 @@ function App() {
 
   // const lang = useSelector((state) => state.locale.lang);
 
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectLoading);
-  const isError = useSelector(selectError);
+  // const dispatch = useDispatch();
+  // const isLoading = useSelector(selectLoading);
+  // const isError = useSelector(selectError);
 
-  useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchTasks());
+  // }, [dispatch]);
 
   return (
     <div className={css.conteiner}>
@@ -253,11 +258,21 @@ function App() {
       <LangRedux />
       <p>Selected lang: {lang}</p> */}
       {/* Async REDUX */}
-      <TaskFormRedux />
+      {/* <TaskFormRedux />
       <FilterRedux />
       {isLoading && <DiscussLoading />}
       {isError && <b>Ooops! There was an error! Please reload!</b>}
-      <TaskListRedux />
+      <TaskListRedux /> */}
+
+      {/* Login && SignUp */}
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/links" element={<LinksPage />} />
+          <Route path="/registration" element={<RegisterPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Layout>
     </div>
   );
 }
