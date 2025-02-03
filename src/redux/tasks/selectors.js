@@ -1,5 +1,5 @@
-export const selectTasks = (state) => state.tasks.items;
+export const selectTasks = (state) => state.links.items;
 
-export const selectLoading = (state) => state.tasks.loading;
+export const selectLoading = (state) => state.links.loading;
 
-export const selectError = (state) => state.tasks.error;
+export const selectError = (state) => state.links.error;

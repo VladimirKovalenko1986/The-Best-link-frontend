@@ -50,6 +50,7 @@ const LinksPage = lazy(() => import("../../pages/LinksPage/LinksPage.jsx"));
 const RegisterPage = lazy(() =>
   import("../../pages/RegisterPage/RegisterPage.jsx")
 );
+const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage.jsx"));
 // const PaymentsPage = lazy(() =>
 //   import("../../pages/PaymentsPage/PaymentsPage.jsx")
 // );
@@ -270,6 +271,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/links" element={<LinksPage />} />
           <Route path="/registration" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Layout>
