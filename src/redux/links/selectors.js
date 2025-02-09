@@ -1,4 +1,4 @@
-export const selectTasks = (state) => state.links.items;
+export const selectLinks = (state) => state.links.items;
 
 export const selectLoading = (state) => state.links.loading;
 

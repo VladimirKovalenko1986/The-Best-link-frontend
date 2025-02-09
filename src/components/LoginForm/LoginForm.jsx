@@ -1,9 +1,16 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import { useId } from "react";
+
 import css from "./LoginForm.module.css";
+import { logIn } from "../../redux/auth/operations.js";
 
 export default function LoginForm() {
+  const loading = useSelector((state) => state.auth.loading);
+  const error = useSelector((state) => state.auth.error);
+  const dispatch = useDispatch();
+
   const userSchema = Yup.object().shape({
     email: Yup.string().email("Must be a valid email!").required("Required"),
     password: Yup.string()
@@ -18,7 +25,7 @@ export default function LoginForm() {
   };
 
   const handleSubmit = (values, actions) => {
-    console.log(values);
+    dispatch(logIn(values));
     actions.resetForm();
   };
 
@@ -63,9 +70,11 @@ export default function LoginForm() {
             className={css.error}
           />
         </div>
-
+        {error && (
+          <p className={css.error}>Ooops! There was an error! Please reload!</p>
+        )}
         <button type="submit" className={css.btn}>
-          Sign in user
+          {loading ? "Loading in user..." : "Sign in user"}
         </button>
       </Form>
     </Formik>
