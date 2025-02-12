@@ -55,7 +55,7 @@ const slice = createSlice({
       })
       .addCase(logOut.fulfilled, (state) => {
         state.items = [];
-        state.loading = true;
+        state.loading = false;
         state.error = null;
       }),
 });

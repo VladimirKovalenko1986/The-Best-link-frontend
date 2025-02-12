@@ -9,7 +9,6 @@ export const fetchLinks = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/links");
-      console.log(response.data);
       return response.data.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

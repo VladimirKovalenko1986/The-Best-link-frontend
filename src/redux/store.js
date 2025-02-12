@@ -83,16 +83,41 @@
 /* Async REDUX */
 
 import { configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import taskReducer from "./links/slice.js";
 import authReducer from "./auth/slice.js";
 // import filtersSlice from "../redux/filtersSlice";
 
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["token"],
+};
+
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
 export const store = configureStore({
   reducer: {
     links: taskReducer,
-    auth: authReducer,
+    auth: persistedAuthReducer,
     // filters: filtersSlice,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
-/* Login && SignUp */
+export const persistor = persistStore(store);
