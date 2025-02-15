@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { logIn, logOut, refreshUser, register } from "./operations.js";
+import axios from "axios";
 
 const authSlice = createSlice({
   name: "auth",
@@ -7,6 +8,7 @@ const authSlice = createSlice({
     user: { name: null, email: null, photo: null },
     token: null,
     isLoggedIn: false,
+    isRefreshing: false,
     loading: false,
     error: null,
   },
@@ -53,10 +55,25 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.loading = false;
       })
+      .addCase(refreshUser.pending, (state) => {
+        state.isRefreshing = true;
+      })
       .addCase(refreshUser.fulfilled, (state, action) => {
+        console.log(
+          "New token after refresh:",
+          action.payload.data.accessToken
+        );
         state.user = action.payload.data.user;
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
+        state.isRefreshing = false;
+
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${action.payload.data.accessToken}`;
+      })
+      .addCase(refreshUser.rejected, (state) => {
+        state.isRefreshing = false;
       }),
 });
 

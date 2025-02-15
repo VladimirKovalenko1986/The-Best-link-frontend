@@ -39,6 +39,10 @@ import Layout from "../Layout/Layout.jsx";
 // import TaskListRedux from "../TaskListRedux/TaskListRedux.jsx";
 import css from "./App.module.css";
 import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectIsRefreshing } from "../../redux/auth/selector.js";
+import RestrictedRoute from "../RestrictedRoute/RestrictedRoute.jsx";
+import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
 // import { useEffect } from "react";
 // import { fetchTasks } from "../../redux/taskOps.js";
 // import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
@@ -65,6 +69,7 @@ const NotFoundPage = lazy(() =>
 // const Receipt = lazy(() => import("../Receipt/Receipt.jsx"));
 
 function App() {
+  const isRefreshing = useSelector(selectIsRefreshing);
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
@@ -267,13 +272,40 @@ function App() {
 
       {/* Login && SignUp */}
       <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/links" element={<LinksPage />} />
-          <Route path="/registration" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <>
+          {isRefreshing ? (
+            <b>Refreshing user please wait...</b>
+          ) : (
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route
+                path="/links"
+                element={
+                  <PrivateRoute component={<LinksPage />} redirectTo="/login" />
+                }
+              />
+              <Route
+                path="/registration"
+                element={
+                  <RestrictedRoute
+                    component={<RegisterPage />}
+                    redirectTo="/login"
+                  />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <RestrictedRoute
+                    component={<LoginPage />}
+                    redirectTo="/links"
+                  />
+                }
+              />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          )}
+        </>
       </Layout>
     </div>
   );
