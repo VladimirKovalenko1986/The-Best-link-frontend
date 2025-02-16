@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useId } from "react";
 
@@ -25,8 +26,15 @@ export default function LoginForm() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(logIn(values));
-    actions.resetForm();
+    dispatch(logIn(values))
+      .unwrap()
+      .then(() => {
+        toast.success("You have successfully login!");
+        actions.resetForm();
+      })
+      .catch((err) => {
+        toast.error(`A login error has occurred: ${err}`);
+      });
   };
 
   const emailId = useId();

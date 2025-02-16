@@ -45,7 +45,6 @@ export default function LinkEditor() {
   };
 
   const handleSubmit = (values, actions) => {
-    console.log(values);
     dispatch(addLink(values));
     actions.resetForm();
   };

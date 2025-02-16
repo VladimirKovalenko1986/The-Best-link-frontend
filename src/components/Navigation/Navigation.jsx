@@ -10,6 +10,7 @@ const getNavLinkClass = ({ isActive }) => {
 
 export default function Navigation() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+
   return (
     <nav>
       <NavLink to="/" className={getNavLinkClass}>

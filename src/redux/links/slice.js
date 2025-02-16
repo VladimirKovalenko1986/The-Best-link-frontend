@@ -44,7 +44,7 @@ const slice = createSlice({
       })
       .addCase(deleteLink.fulfilled, (state, action) => {
         state.items = state.items.filter(
-          (item) => item.id !== action.payload.id
+          (item) => item._id !== action.payload.id
         );
         state.error = null;
         state.loading = false;

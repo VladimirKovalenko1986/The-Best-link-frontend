@@ -17,7 +17,7 @@ export const fetchLinks = createAsyncThunk(
 );
 
 export const addLink = createAsyncThunk(
-  "addLinks",
+  "addLink",
   async (linkData, thunkAPI) => {
     const state = thunkAPI.getState();
     const token = state.auth.token; // ✅ Отримуємо токен з Redux
@@ -54,11 +54,11 @@ export const addLink = createAsyncThunk(
 );
 
 export const deleteLink = createAsyncThunk(
-  "deleteLinks",
+  "deleteLink",
   async (linkId, thunkAPI) => {
     try {
-      const response = await axios.delete(`/tasks/tasks/${linkId}`);
-      return response.data;
+      await axios.delete(`/links/${linkId}`);
+      return { id: linkId };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
