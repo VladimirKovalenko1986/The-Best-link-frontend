@@ -1,11 +1,21 @@
-import { useDispatch } from "react-redux";
-import { deleteLink } from "../../redux/links/operations.js";
+import { useDispatch, useSelector } from "react-redux";
+// import { useEffect } from "react";
+// import { deleteLink } from "../../redux/links/operations.js";
+import { openModal } from "../../redux/links/slice.js";
+import ModalDeleteLink from "../ModalDeleteLink/ModalDeleteLink.jsx";
 import css from "./LinkItem.module.css";
+import {
+  selectIsOpen,
+  selectModalLinkId,
+} from "../../redux/links/selectors.js";
 
 export default function LinkItem({
   link: { _id, nameType, link, nameLink, textLink },
 }) {
   const dispatch = useDispatch();
+  const isOpen = useSelector(selectIsOpen);
+  const modalLinkId = useSelector(selectModalLinkId);
+
   return (
     <div className={css.conteiner}>
       <p>{nameType}</p>
@@ -21,11 +31,13 @@ export default function LinkItem({
       <div className={css.wrapper}>
         <button
           className={css.btnDelete}
-          onClick={() => dispatch(deleteLink(_id))}
+          onClick={() => dispatch(openModal(_id))}
+          // onClick={() => dispatch(deleteLink(_id))}
         >
           Delete
         </button>
         <button className={css.btnEdite}>Edite</button>
+        {isOpen && modalLinkId === _id && <ModalDeleteLink />}
       </div>
     </div>
   );

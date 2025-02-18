@@ -64,3 +64,42 @@ export const deleteLink = createAsyncThunk(
     }
   }
 );
+
+export const editeLink = createAsyncThunk(
+  "editeLink",
+  async ({ linkId, linkData }, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const token = state.auth.token;
+
+    if (!token) {
+      return thunkAPI.rejectWithValue("No access token available");
+    }
+
+    try {
+      // 1. Створюємо FormData
+      const formData = new FormData();
+
+      // 2. Додаємо поля (текстові)
+      formData.append("nameType", linkData.nameType);
+      formData.append("link", linkData.link);
+      formData.append("nameLink", linkData.nameLink);
+      formData.append("textLink", linkData.textLink);
+      // 3. Якщо є файл, додаємо
+      if (linkData.poster) {
+        formData.append("poster", linkData.poster);
+      }
+      const response = await axios.patch(`/links/${linkId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // ✅ Додаємо `Authorization`
+        },
+        withCredentials: true, // ✅ Передаємо cookies
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
+    }
+  }
+);

@@ -9,7 +9,21 @@ const slice = createSlice({
     items: [],
     loading: false,
     error: null,
+    modal: {
+      isOpen: false,
+    },
   },
+  reducers: {
+    openModal: (state, action) => {
+      state.modal.isOpen = true;
+      state.modal.modalLinkId = action.payload; // Передаємо _id посилання
+    },
+    closeModal: (state) => {
+      state.modal.isOpen = false;
+      state.modal.modalLinkId = null;
+    },
+  },
+
   extraReducers: (builder) =>
     builder
       .addCase(fetchLinks.pending, (state) => {
@@ -69,4 +83,5 @@ const slice = createSlice({
 //   }
 // );
 
+export const { openModal, closeModal } = slice.actions;
 export default slice.reducer;

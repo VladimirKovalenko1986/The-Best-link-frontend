@@ -43,6 +43,7 @@ import { useSelector } from "react-redux";
 import { selectIsRefreshing } from "../../redux/auth/selector.js";
 import RestrictedRoute from "../RestrictedRoute/RestrictedRoute.jsx";
 import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
+// import { selectIsOpen } from "../../redux/links/selectors.js";
 // import { useEffect } from "react";
 // import { fetchTasks } from "../../redux/taskOps.js";
 // import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
@@ -70,6 +71,7 @@ const NotFoundPage = lazy(() =>
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
+
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const openModal = () => setIsModalOpen(true);
   // const closeModal = () => setIsModalOpen(false);
