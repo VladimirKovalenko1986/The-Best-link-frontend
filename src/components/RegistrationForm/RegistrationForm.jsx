@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
 import css from "./RegistrationForm.module.css";
@@ -12,7 +12,7 @@ export default function RegistrationForm() {
   const error = useSelector((state) => state.auth.error);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const userSchema = Yup.object().shape({
     name: Yup.string()
@@ -41,7 +41,7 @@ export default function RegistrationForm() {
         toast.success("You have successfully registered!");
         actions.resetForm();
         fileInputRef.current.value = "";
-        // navigate("/login");
+        navigate("/login");
       })
       .catch((err) => {
         toast.error(`A registration error has occurred: ${err}`);
