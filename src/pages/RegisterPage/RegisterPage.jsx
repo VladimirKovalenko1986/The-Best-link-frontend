@@ -6,6 +6,7 @@ import css from "./RegisterPage.module.css";
 
 export default function RegisterPage() {
   const loading = useSelector((state) => state.auth.loading);
+
   return (
     <div className={css.conteiner}>
       <TitleLink text="Register you account" />

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchLinks, addLink, deleteLink } from "./operations.js";
+import { fetchLinks, addLink, deleteLink, editeLink } from "./operations.js";
 import { logOut } from "../auth/operations.js";
 // import { selectTextFilter } from "../filtersSlice.js";
 
@@ -11,16 +11,20 @@ const slice = createSlice({
     error: null,
     modal: {
       isOpen: false,
+      modalLinkId: null,
+      modalType: null,
     },
   },
   reducers: {
     openModal: (state, action) => {
       state.modal.isOpen = true;
-      state.modal.modalLinkId = action.payload; // Передаємо _id посилання
+      state.modal.modalLinkId = action.payload.id;
+      state.modal.modalType = action.payload.type;
     },
     closeModal: (state) => {
       state.modal.isOpen = false;
       state.modal.modalLinkId = null;
+      state.modalType = null;
     },
   },
 
@@ -64,6 +68,26 @@ const slice = createSlice({
         state.loading = false;
       })
       .addCase(deleteLink.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(editeLink.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editeLink.fulfilled, (state, action) => {
+        const updatedLink = action.payload.data;
+        const index = state.items.findIndex(
+          (item) => item._id === updatedLink._id
+        );
+
+        if (index !== -1) {
+          state.items[index] = updatedLink;
+        }
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(editeLink.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       })

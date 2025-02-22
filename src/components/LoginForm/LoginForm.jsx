@@ -3,13 +3,13 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useId } from "react";
-
+import { selectLoading, selectError } from "../../redux/auth/selector.js";
 import css from "./LoginForm.module.css";
 import { logIn } from "../../redux/auth/operations.js";
 
 export default function LoginForm() {
-  const loading = useSelector((state) => state.auth.loading);
-  const error = useSelector((state) => state.auth.error);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
 
   const userSchema = Yup.object().shape({

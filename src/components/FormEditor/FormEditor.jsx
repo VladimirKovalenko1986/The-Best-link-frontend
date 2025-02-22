@@ -1,17 +1,28 @@
 import TitleLink from "../TitleLink/TitleLink.jsx";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { addLink } from "../../redux/links/operations.js";
-import { selectLoading, selectError } from "../../redux/links/selectors.js";
+import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
+import {
+  selectModalLinkId,
+  selectLoading,
+  selectError,
+} from "../../redux/links/selectors.js";
+import { editeLink } from "../../redux/links/operations.js";
+import { closeModal } from "../../redux/links/slice.js";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
-import css from "./LinkEditor.module.css";
+import css from "./FormEditor.module.css";
 
-export default function LinkEditor() {
+export default function FormEditor() {
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
+  const id = useSelector(selectModalLinkId);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
 
   const addLinkSchema = Yup.object().shape({
     nameType: Yup.string()
@@ -45,7 +56,18 @@ export default function LinkEditor() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(addLink(values));
+    dispatch(editeLink({ linkId: id, linkData: values }))
+      .unwrap()
+      .then(() => {
+        toast.success("You have successfully edite link!");
+        actions.resetForm();
+        fileInputRef.current.value = "";
+        handleClose();
+        // handleFetchLink();
+      })
+      .catch((err) => {
+        toast.error(`Edite in not correct: ${err}`);
+      });
     actions.resetForm();
   };
 
@@ -57,7 +79,8 @@ export default function LinkEditor() {
 
   return (
     <div className={css.conteiner}>
-      <TitleLink text="Add new link" />
+      <TitleLink text="Edite link" />
+      {loading && <DiscussLoading />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -152,7 +175,7 @@ export default function LinkEditor() {
             )}
 
             <button type="submit" className={css.btn}>
-              {loading ? "Ading..." : "Add Link"}
+              {loading ? "Editeng..." : "Edite"}
             </button>
           </Form>
         )}

@@ -3,13 +3,14 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
-import css from "./RegistrationForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/auth/operations.js";
+import { selectLoading, selectError } from "../../redux/auth/selector.js";
+import css from "./RegistrationForm.module.css";
 
 export default function RegistrationForm() {
-  const loading = useSelector((state) => state.auth.loading);
-  const error = useSelector((state) => state.auth.error);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
   const navigate = useNavigate();
@@ -44,7 +45,11 @@ export default function RegistrationForm() {
         navigate("/login");
       })
       .catch((err) => {
-        toast.error(`A registration error has occurred: ${err}`);
+        if (err === "Request failed with status code 409") {
+          toast.error("User already registered!");
+        } else {
+          toast.error(`A registration error has occurred: ${err}`);
+        }
       });
   };
 
