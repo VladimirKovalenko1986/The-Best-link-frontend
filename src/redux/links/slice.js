@@ -9,6 +9,8 @@ const slice = createSlice({
     items: [],
     loading: false,
     error: null,
+    hasNextPage: false,
+    currentPage: 1,
     modal: {
       isOpen: false,
       modalLinkId: null,
@@ -26,6 +28,9 @@ const slice = createSlice({
       state.modal.modalLinkId = null;
       state.modalType = null;
     },
+    setPage: (state, action) => {
+      state.currentPage = action.payload;
+    },
   },
 
   extraReducers: (builder) =>
@@ -35,12 +40,17 @@ const slice = createSlice({
         state.error = null;
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
-        state.items = action.payload;
+        if (action.meta.arg.page === 1) {
+          state.items = action.payload.data;
+        } else {
+          state.items = [...state.items, ...action.payload.data];
+        }
+        state.hasNextPage = action.payload.hasNextPage;
         state.error = null;
         state.loading = false;
       })
       .addCase(fetchLinks.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = action.payload.data;
         state.loading = false;
       })
       .addCase(addLink.pending, (state) => {
@@ -107,5 +117,5 @@ const slice = createSlice({
 //   }
 // );
 
-export const { openModal, closeModal } = slice.actions;
+export const { openModal, closeModal, setPage } = slice.actions;
 export default slice.reducer;

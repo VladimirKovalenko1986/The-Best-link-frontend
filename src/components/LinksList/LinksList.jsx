@@ -12,7 +12,7 @@ export default function LinksList() {
   const loading = useSelector((state) => state.links.loading);
 
   useEffect(() => {
-    dispatch(fetchLinks());
+    dispatch(fetchLinks({ page: 1, limit: 10 }));
   }, [dispatch]);
 
   return (

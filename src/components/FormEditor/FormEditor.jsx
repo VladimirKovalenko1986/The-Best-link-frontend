@@ -63,7 +63,6 @@ export default function FormEditor() {
         actions.resetForm();
         fileInputRef.current.value = "";
         handleClose();
-        // handleFetchLink();
       })
       .catch((err) => {
         toast.error(`Edite in not correct: ${err}`);
@@ -175,7 +174,7 @@ export default function FormEditor() {
             )}
 
             <button type="submit" className={css.btn}>
-              {loading ? "Editeng..." : "Edite"}
+              {loading ? "Editeng..." : "Edit"}
             </button>
           </Form>
         )}

@@ -6,10 +6,10 @@ axios.defaults.withCredentials = true;
 
 export const fetchLinks = createAsyncThunk(
   "fetchLinks",
-  async (_, thunkAPI) => {
+  async ({ page = 1, limit = 10 }, thunkAPI) => {
     try {
-      const response = await axios.get("/links");
-      return response.data.data.data;
+      const response = await axios.get(`/links?page=${page}&limit=${limit}`);
+      return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

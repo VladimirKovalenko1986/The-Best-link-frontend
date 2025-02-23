@@ -9,3 +9,7 @@ export const selectIsOpen = (state) => state.links.modal.isOpen;
 export const selectModalLinkId = (state) => state.links.modal.modalLinkId;
 
 export const selectModalType = (state) => state.links.modal.modalType;
+
+export const selectHasNextPage = (state) => state.links.hasNextPage;
+
+export const selectCurrentPage = (state) => state.links.currentPage;

@@ -42,7 +42,7 @@ export default function LinkItem({
           className={css.btnEdite}
           onClick={() => dispatch(openModal({ id: _id, type: "edit" }))}
         >
-          Edite
+          Edit
         </button>
         {isOpen && modalLinkId === _id && modalType === "delete" && (
           <ModalDeleteLink />
