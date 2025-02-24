@@ -11,6 +11,7 @@ const slice = createSlice({
     error: null,
     hasNextPage: false,
     currentPage: 1,
+    filter: "",
     modal: {
       isOpen: false,
       modalLinkId: null,
@@ -30,6 +31,9 @@ const slice = createSlice({
     },
     setPage: (state, action) => {
       state.currentPage = action.payload;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
     },
   },
 
@@ -108,14 +112,5 @@ const slice = createSlice({
       }),
 });
 
-// export const selectVisibleTasks = createSelector(
-//   [selectTasks, selectTextFilter],
-//   (tasks, textFilter) => {
-//     return tasks.filter((task) =>
-//       task.text.toLowerCase().includes(textFilter.toLowerCase())
-//     );
-//   }
-// );
-
-export const { openModal, closeModal, setPage } = slice.actions;
+export const { openModal, closeModal, setPage, setFilter } = slice.actions;
 export default slice.reducer;

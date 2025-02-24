@@ -13,3 +13,5 @@ export const selectModalType = (state) => state.links.modal.modalType;
 export const selectHasNextPage = (state) => state.links.hasNextPage;
 
 export const selectCurrentPage = (state) => state.links.currentPage;
+
+export const selectFilter = (state) => state.links.filter;
