@@ -43,6 +43,7 @@ import { useSelector } from "react-redux";
 import { selectIsRefreshing } from "../../redux/auth/selector.js";
 import RestrictedRoute from "../RestrictedRoute/RestrictedRoute.jsx";
 import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
+import SendEmailResetPassword from "../SendEmailResetPassword/SendEmailResetPassword.jsx";
 // import { selectIsOpen } from "../../redux/links/selectors.js";
 // import { useEffect } from "react";
 // import { fetchTasks } from "../../redux/taskOps.js";
@@ -56,6 +57,9 @@ const RegisterPage = lazy(() =>
   import("../../pages/RegisterPage/RegisterPage.jsx")
 );
 const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage.jsx"));
+const PageResetPassword = lazy(() =>
+  import("../../pages/PageResetPassword/PageResetPassword.jsx")
+);
 // const PaymentsPage = lazy(() =>
 //   import("../../pages/PaymentsPage/PaymentsPage.jsx")
 // );
@@ -303,7 +307,14 @@ function App() {
                     redirectTo="/links"
                   />
                 }
-              />
+              >
+                <Route
+                  path="send-email-reset-password"
+                  element={<SendEmailResetPassword />}
+                />
+              </Route>
+
+              <Route path="/reset-password" element={<PageResetPassword />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           )}

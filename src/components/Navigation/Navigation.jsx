@@ -2,7 +2,10 @@ import { NavLink } from "react-router-dom";
 import css from "./Navigation.module.css";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "../../redux/auth/selector.js";
+import {
+  selectIsLoggedIn,
+  selectResetPassword,
+} from "../../redux/auth/selector.js";
 
 const getNavLinkClass = ({ isActive }) => {
   return clsx(css.link, isActive && css.active);
@@ -10,6 +13,7 @@ const getNavLinkClass = ({ isActive }) => {
 
 export default function Navigation() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const resetPassword = useSelector(selectResetPassword);
 
   return (
     <nav>
@@ -20,6 +24,11 @@ export default function Navigation() {
       {isLoggedIn && (
         <NavLink to="/links" className={getNavLinkClass}>
           Links
+        </NavLink>
+      )}
+      {resetPassword && (
+        <NavLink to="/reset-password" className={getNavLinkClass}>
+          Reset password
         </NavLink>
       )}
     </nav>

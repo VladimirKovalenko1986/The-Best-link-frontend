@@ -87,3 +87,34 @@ export const refreshUser = createAsyncThunk(
     },
   }
 );
+
+export const sendEmailResetPassword = createAsyncThunk(
+  "request-reset-email",
+  async ({ email }, thunkAPI) => {
+    try {
+      const response = await axios.post("/auth/request-reset-email", { email });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong"
+      );
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "reset-password",
+  async ({ token, password }, thunkAPI) => {
+    try {
+      const response = await axios.post("/auth/reset-password", {
+        token,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
+    }
+  }
+);
