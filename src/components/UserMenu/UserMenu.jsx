@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import css from "./UserMenu.module.css";
-import { selectUser } from "../../redux/auth/selector.js";
+import { selectLoading, selectUser } from "../../redux/auth/selector.js";
 import { logOut } from "../../redux/auth/operations.js";
 
 export default function UserMenu() {
-  const loading = useSelector((state) => state.auth.loading);
+  const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const { photo, name } = user;
@@ -16,6 +16,10 @@ export default function UserMenu() {
   const handleLogout = () => {
     dispatch(logOut());
   };
+
+  if (!user || !user.email) {
+    return <p>Loading...</p>; // ✅ Показуємо "Loading..." поки немає даних
+  }
   return (
     <div className={css.conteiner}>
       <img className={css.img} src={userPhoto} alt="photo user" />

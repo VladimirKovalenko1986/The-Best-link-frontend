@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 axios.defaults.baseURL = "https://the-best-link-backend.onrender.com";
 axios.defaults.withCredentials = true;
 
-const setAuthHeader = (token) => {
+export const setAuthHeader = (token) => {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
@@ -72,38 +72,55 @@ export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
     const reduxState = thunkAPI.getState();
-    const sevedToken = reduxState.auth.token;
+    const savedToken = reduxState.auth.token;
 
-    setAuthHeader(sevedToken);
+    if (!savedToken) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
 
-    const response = await axios.post("/auth/refresh");
-    return response.data;
+    try {
+      // ✅ Встановлюємо старий токен для запиту оновлення сесії
+      setAuthHeader(savedToken);
+
+      const response = await axios.post("/auth/refresh");
+
+      const newAccessToken = response.data.data.accessToken;
+
+      // ✅ Оновлюємо `Authorization` заголовок
+      setAuthHeader(newAccessToken);
+
+      return response.data;
+    } catch (error) {
+      // ❌ Якщо токен протух — видаляємо його
+      clearAuthHeader();
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Session expired"
+      );
+    }
   },
   {
     condition(_, thunkAPI) {
       const reduxState = thunkAPI.getState();
-      const sevedToken = reduxState.auth.token;
-      return sevedToken !== null;
+      const savedToken = reduxState.auth.token;
+      return !!savedToken; // Перетворюємо `null` в `false`
     },
   }
 );
 
 export const sendEmailResetPassword = createAsyncThunk(
-  "request-reset-email",
+  "auth/request-reset-email",
   async ({ email }, thunkAPI) => {
     try {
       const response = await axios.post("/auth/request-reset-email", { email });
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Something went wrong"
-      );
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
 export const resetPassword = createAsyncThunk(
-  "reset-password",
+  "auth/reset-password",
   async ({ token, password }, thunkAPI) => {
     try {
       const response = await axios.post("/auth/reset-password", {
@@ -112,8 +129,46 @@ export const resetPassword = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchGoogleOAuthUrl = createAsyncThunk(
+  "auth/get-oauth-url",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get("/auth/get-oauth-url");
+      console.log(response.data.data.url);
+      return response.data.data.url;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const loginWithGoogle = createAsyncThunk(
+  "auth/confirm-oauth",
+  async (code, thunkAPI) => {
+    try {
+      const response = await axios.post("/auth/confirm-oauth", { code });
+
+      console.log("Google login response:", response.data);
+
+      // ✅ Переконайся, що дані отримуються правильно
+      const user = response.data?.data?.user;
+      const accessToken = response.data?.data?.accessToken;
+
+      if (!user || !accessToken) {
+        throw new Error("Invalid user data from Google login");
+      }
+
+      setAuthHeader(accessToken);
+
+      return { user, accessToken };
+    } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        error.response?.data?.message || "Google login failed"
       );
     }
   }

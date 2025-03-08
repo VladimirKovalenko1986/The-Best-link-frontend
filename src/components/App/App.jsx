@@ -52,6 +52,9 @@ import SendEmailResetPassword from "../SendEmailResetPassword/SendEmailResetPass
 // import { selectLoading, selectError } from "../../redux/tasksSlice.js";
 
 const HomePage = lazy(() => import("../../pages/HomePage/HomePage.jsx"));
+const GoogleRedirectPage = lazy(() =>
+  import("../../pages/GoogleRedirectPage/GoogleRedirectPage.jsx")
+);
 const LinksPage = lazy(() => import("../../pages/LinksPage/LinksPage.jsx"));
 const RegisterPage = lazy(() =>
   import("../../pages/RegisterPage/RegisterPage.jsx")
@@ -298,6 +301,11 @@ function App() {
                     redirectTo="/login"
                   />
                 }
+              />
+
+              <Route
+                path="/auth/google-redirect"
+                element={<GoogleRedirectPage />}
               />
               <Route
                 path="/login"

@@ -96,6 +96,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import taskReducer from "./links/slice.js";
 import authReducer from "./auth/slice.js";
+import { setAuthHeader } from "./auth/operations.js";
 // import filtersSlice from "../redux/filtersSlice";
 
 const authPersistConfig = {
@@ -121,3 +122,10 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+persistor.subscribe(() => {
+  const state = store.getState();
+  if (state.auth.token) {
+    setAuthHeader(state.auth.token);
+  }
+});

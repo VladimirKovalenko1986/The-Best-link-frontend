@@ -6,8 +6,9 @@ import {
   register,
   sendEmailResetPassword,
   resetPassword,
+  fetchGoogleOAuthUrl,
+  loginWithGoogle,
 } from "./operations.js";
-import axios from "axios";
 
 const authSlice = createSlice({
   name: "auth",
@@ -19,15 +20,12 @@ const authSlice = createSlice({
     loading: false,
     error: null,
     message: "",
-    resetPassword: false,
-    password: "",
   },
   reducers: {
     clearMessage: (state) => {
       state.message = "";
     },
   },
-
   extraReducers: (builder) =>
     builder
       .addCase(register.pending, (state) => {
@@ -37,6 +35,7 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.user = action.payload.data;
         state.token = action.payload.data.accessToken || null;
+        state.isLoggedIn = true;
         state.loading = false;
       })
       .addCase(register.rejected, (state, action) => {
@@ -62,10 +61,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logOut.fulfilled, (state) => {
-        state.user = { name: null, email: null, photo: null };
+        state.user = { name: "", email: "", photo: "" };
         state.token = null;
-        state.loading = false;
         state.isLoggedIn = false;
+        state.loading = false;
       })
       .addCase(logOut.rejected, (state, action) => {
         state.error = action.payload;
@@ -75,20 +74,16 @@ const authSlice = createSlice({
         state.isRefreshing = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
-        console.log(
-          "New token after refresh:",
-          action.payload.data.accessToken
-        );
         state.user = action.payload.data.user;
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
         state.isRefreshing = false;
-
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${action.payload.data.accessToken}`;
       })
       .addCase(refreshUser.rejected, (state) => {
+        // ❌ Якщо refreshToken не дійсний, видаляємо токен та користувача
+        state.user = { name: "", email: "", photo: "" };
+        state.token = null;
+        state.isLoggedIn = false;
         state.isRefreshing = false;
       })
       .addCase(sendEmailResetPassword.pending, (state) => {
@@ -114,6 +109,33 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(resetPassword.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchGoogleOAuthUrl.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchGoogleOAuthUrl.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchGoogleOAuthUrl.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        console.log("Redux received user:", action.payload?.user); // ✅ Додаємо лог
+
+        state.user = action.payload?.user || { name: "", email: "", photo: "" };
+        state.token = action.payload?.accessToken;
+        state.isLoggedIn = true;
+        state.loading = false;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       }),
