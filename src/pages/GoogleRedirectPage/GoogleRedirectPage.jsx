@@ -30,15 +30,6 @@ export default function GoogleRedirectPage() {
     }
   }, [dispatch, navigate, searchParams]);
 
-  // ✅ Додамо лог тут, щоб перевірити, коли оновлюється `user`
-  useEffect(() => {
-    console.log("User state updated:", user); // Лог зміни користувача
-    if (isLoggedIn && user.email) {
-      navigate("/links");
-    }
-  }, [isLoggedIn, user, navigate]);
-
-  // ✅ Чекаємо, поки user не буде `null`
   useEffect(() => {
     if (isLoggedIn && user.email) {
       navigate("/links");

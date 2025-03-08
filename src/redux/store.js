@@ -96,6 +96,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import taskReducer from "./links/slice.js";
 import authReducer from "./auth/slice.js";
+import themeReducer from "./theme/slice.js";
 import { setAuthHeader } from "./auth/operations.js";
 // import filtersSlice from "../redux/filtersSlice";
 
@@ -105,12 +106,20 @@ const authPersistConfig = {
   whitelist: ["token"],
 };
 
+const themePersistConfig = {
+  key: "theme",
+  storage,
+  whitelist: ["mode"],
+};
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistedThemeReducer = persistReducer(themePersistConfig, themeReducer);
 
 export const store = configureStore({
   reducer: {
     links: taskReducer,
     auth: persistedAuthReducer,
+    theme: persistedThemeReducer,
     // filters: filtersSlice,
   },
   middleware: (getDefaultMiddleware) =>

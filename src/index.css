@@ -1,3 +1,31 @@
+:root {
+  --background-light: #ffffff;
+  --text-light: #000000;
+  --button-bg-light: #007bff;
+  --button-text-light: #ffffff;
+  --active-link-light: #007bff; /* Колір активного посилання у світлій темі */
+
+  --background-dark: #3c3b3b;
+  --text-dark: #ffffff;
+  --button-bg-dark: #222222;
+  --button-text-dark: #ffffff;
+  --active-link-dark: #f39c12; /* Колір активного посилання у темній темі */
+}
+
+.light {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.dark {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+.dark .active {
+  color: var(--active-link-dark);
+}
+
 body {
   font-family: sans-serif;
   line-height: 1.5;

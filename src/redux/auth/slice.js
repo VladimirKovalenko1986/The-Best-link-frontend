@@ -80,7 +80,6 @@ const authSlice = createSlice({
         state.isRefreshing = false;
       })
       .addCase(refreshUser.rejected, (state) => {
-        // ❌ Якщо refreshToken не дійсний, видаляємо токен та користувача
         state.user = { name: "", email: "", photo: "" };
         state.token = null;
         state.isLoggedIn = false;
@@ -128,8 +127,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
-        console.log("Redux received user:", action.payload?.user); // ✅ Додаємо лог
-
         state.user = action.payload?.user || { name: "", email: "", photo: "" };
         state.token = action.payload?.accessToken;
         state.isLoggedIn = true;

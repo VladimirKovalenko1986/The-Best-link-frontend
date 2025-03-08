@@ -3,6 +3,7 @@ import css from "./AppBar.module.css";
 import Navigation from "../Navigation/Navigation.jsx";
 import UserMenu from "../UserMenu/UserMenu.jsx";
 import AuthNav from "../AuthNav/AuthNav.jsx";
+import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher.jsx";
 import { selectIsLoggedIn } from "../../redux/auth/selector.js";
 import { useEffect } from "react";
 import { refreshUser } from "../../redux/auth/operations.js";
@@ -18,6 +19,7 @@ export default function AppBar() {
   return (
     <header className={css.conteiner}>
       <Navigation />
+      <ThemeSwitcher />
       {isLoggedIn ? <UserMenu /> : <AuthNav />}
     </header>
   );

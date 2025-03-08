@@ -3,10 +3,11 @@ import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
 import TitleLink from "../../components/TitleLink/TitleLink.jsx";
 import RegistrationForm from "../../components/RegistrationForm/RegistrationForm.jsx";
 import RegistrationGoogle from "../../components/RegistrationGoogle/RegistrationGoogle.jsx";
+import { selectLoading } from "../../redux/auth/selector.js";
 import css from "./RegisterPage.module.css";
 
 export default function RegisterPage() {
-  const loading = useSelector((state) => state.auth.loading);
+  const loading = useSelector(selectLoading);
 
   return (
     <div className={css.conteiner}>

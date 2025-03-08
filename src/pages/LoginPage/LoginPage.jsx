@@ -6,6 +6,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Suspense } from "react";
 import { useEffect } from "react";
 import { fetchGoogleOAuthUrl } from "../../redux/auth/operations.js";
+import RegistrationGoogle from "../../components/RegistrationGoogle/RegistrationGoogle";
 import css from "./LoginPage.module.css";
 
 export default function LoginPage() {
@@ -21,6 +22,7 @@ export default function LoginPage() {
       <TitleLink text="Sign in to your account! " />
       {loading && <DiscussLoading />}
       <LoginForm />
+      <RegistrationGoogle />
       <div className={css.conteiner}>
         <Link to="send-email-reset-password" className={css.link}>
           Click if you not remeber password!

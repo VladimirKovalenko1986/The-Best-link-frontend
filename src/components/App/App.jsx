@@ -45,7 +45,8 @@ import RestrictedRoute from "../RestrictedRoute/RestrictedRoute.jsx";
 import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
 import SendEmailResetPassword from "../SendEmailResetPassword/SendEmailResetPassword.jsx";
 // import { selectIsOpen } from "../../redux/links/selectors.js";
-// import { useEffect } from "react";
+import { useEffect } from "react";
+import { selectTheme } from "../../redux/theme/selectors.js";
 // import { fetchTasks } from "../../redux/taskOps.js";
 // import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
 // import FilterRedux from "../FilterRedux/FilterRedux.jsx";
@@ -78,6 +79,7 @@ const NotFoundPage = lazy(() =>
 
 function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
+  const theme = useSelector(selectTheme);
 
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const openModal = () => setIsModalOpen(true);
@@ -205,6 +207,11 @@ function App() {
   // useEffect(() => {
   //   dispatch(fetchTasks());
   // }, [dispatch]);
+
+  useEffect(() => {
+    document.body.classList.remove("light", "dark"); // Видаляємо всі попередні класи
+    document.body.classList.add(theme); // Додаємо клас з темою
+  }, [theme]);
 
   return (
     <div className={css.conteiner}>
