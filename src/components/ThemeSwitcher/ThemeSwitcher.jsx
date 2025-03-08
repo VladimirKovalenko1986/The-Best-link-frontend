@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/theme/slice.js";
-import css from "./ThemeSwitcher.module.css";
 import { selectTheme } from "../../redux/theme/selectors.js";
+import css from "./ThemeSwitcher.module.css";
 
 export default function ThemeSwitcher() {
   const dispatch = useDispatch();

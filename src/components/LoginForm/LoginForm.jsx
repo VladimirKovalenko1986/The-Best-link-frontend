@@ -33,7 +33,11 @@ export default function LoginForm() {
         actions.resetForm();
       })
       .catch((err) => {
-        toast.error(`A login error has occurred: ${err}`);
+        if (err === "Request failed with status code 401") {
+          toast.error("Enter password or email is not correct!");
+        } else {
+          toast.error(`A registration error has occurred: ${err}`);
+        }
       });
   };
 

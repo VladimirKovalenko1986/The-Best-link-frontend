@@ -6,17 +6,20 @@ export default function HomePage() {
     <div>
       <TitleLink text="The Best Links" />
       <p className={css.text}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem quod
-        blanditiis officia ad ea dolor eligendi, temporibus voluptatibus
-        recusandae quas similique, voluptatum libero, incidunt odio quibusdam!
-        Repudiandae obcaecati tempora nisi odit eos illum aut necessitatibus!
-        Laborum saepe soluta quidem ea eligendi iste enim recusandae incidunt
-        cupiditate corrupti sed consectetur rem dolor deserunt quos numquam
-        nesciunt, repellat mollitia adipisci alias, pariatur odit dicta earum.
-        Aliquam aperiam asperiores repudiandae quasi cupiditate itaque maiores
-        quo odio quis molestias ea est rerum, et quibusdam non pariatur
-        perferendis excepturi placeat nobis officia deserunt sunt necessitatibus
-        ab? Sit dolorem nisi earum ad veniam, veritatis officia eius.
+        The Best Links – a collection of my most amazing programming resources!
+        🚀 Here, you`ll find the most useful links to help you level up your
+        skills in JavaScript, React, Node.js, MongoDB, CSS, and much more. 🔥
+      </p>
+      <ul>
+        <li>🔹 Articles and guides 📖</li>
+        <li>🔹 Useful tools 🛠 </li>
+        <li>🔹 Courses and video tutorials 🎥</li>
+        <li>🔹 Cheat sheets and documentation 📜</li>
+      </ul>
+      <p>
+        This collection is designed to make it easier to find the best materials
+        and help you grow as a developer. Bookmark it and make the most of it!
+        💡
       </p>
     </div>
   );

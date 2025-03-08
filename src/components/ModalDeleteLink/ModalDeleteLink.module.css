@@ -12,6 +12,11 @@
   pointer-events: auto; /* ✅ Отримує всі кліки */
 }
 
+.dark {
+  background: white; /* У темному режимі фон модалки залишається білим */
+  color: black;
+}
+
 .modal {
   background: #fff;
   padding: 10px;

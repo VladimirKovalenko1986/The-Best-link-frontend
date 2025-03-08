@@ -25,6 +25,11 @@
   /* height: 100px; */
 }
 
+.dark {
+  background: white; /* У темному режимі фон модалки залишається білим */
+  color: black;
+}
+
 .btnClose {
   border-radius: 50%;
   position: absolute;

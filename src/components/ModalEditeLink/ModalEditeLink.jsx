@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormEditor from "../FormEditor/FormEditor.jsx";
 import { closeModal } from "../../redux/links/slice.js";
+import clsx from "clsx";
 import css from "./ModalEditeLink.module.css";
+import { selectTheme } from "../../redux/theme/selectors.js";
 
 export default function ModalEditeLink() {
   const dispatch = useDispatch();
   const [modalRoot, setModalRoot] = useState(null);
+  const theme = useSelector(selectTheme);
 
   useEffect(() => {
     setModalRoot(document.getElementById("modal-root"));
@@ -23,8 +26,8 @@ export default function ModalEditeLink() {
   if (!modalRoot) return null;
 
   return createPortal(
-    <div className={css.backDrop} onClick={() => dispatch(closeModal())}>
-      <div className={css.modal} onClick={(e) => e.stopPropagation()}>
+    <div className={css.backDrop}>
+      <div className={clsx(css.modal, { [css.dark]: theme === "dark" })}>
         <FormEditor />
         <button className={css.btnClose} onClick={() => dispatch(closeModal())}>
           X

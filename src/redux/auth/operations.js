@@ -139,7 +139,6 @@ export const fetchGoogleOAuthUrl = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/auth/get-oauth-url");
-      console.log(response.data.data.url);
       return response.data.data.url;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
