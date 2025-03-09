@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchLinks, addLink, deleteLink, editeLink } from "./operations.js";
+import { fetchLinks, addLink, deleteLink, editLink } from "./operations.js";
 import { logOut } from "../auth/operations.js";
 // import { selectTextFilter } from "../filtersSlice.js";
 
@@ -7,7 +7,12 @@ const slice = createSlice({
   name: "links",
   initialState: {
     items: [],
-    loading: false,
+    loading: {
+      allLinks: false,
+      addLink: false,
+      deleteLink: false,
+      editLink: false,
+    },
     error: null,
     hasNextPage: false,
     currentPage: 1,
@@ -40,7 +45,7 @@ const slice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(fetchLinks.pending, (state) => {
-        state.loading = true;
+        state.loading.allLinks = true;
         state.error = null;
       })
       .addCase(fetchLinks.fulfilled, (state, action) => {
@@ -51,27 +56,27 @@ const slice = createSlice({
         }
         state.hasNextPage = action.payload.hasNextPage;
         state.error = null;
-        state.loading = false;
+        state.loading.allLinks = false;
       })
       .addCase(fetchLinks.rejected, (state, action) => {
         state.error = action.payload.data;
-        state.loading = false;
+        state.loading.allLinks = false;
       })
       .addCase(addLink.pending, (state) => {
-        state.loading = true;
+        state.loading.addLink = true;
         state.error = null;
       })
       .addCase(addLink.fulfilled, (state, action) => {
         state.items.push(action.payload.data);
         state.error = null;
-        state.loading = false;
+        state.loading.addLink = false;
       })
       .addCase(addLink.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
+        state.loading.addLink = false;
       })
       .addCase(deleteLink.pending, (state) => {
-        state.loading = true;
+        state.loading.deleteLink = true;
         state.error = null;
       })
       .addCase(deleteLink.fulfilled, (state, action) => {
@@ -79,17 +84,17 @@ const slice = createSlice({
           (item) => item._id !== action.payload.id
         );
         state.error = null;
-        state.loading = false;
+        state.loading.deleteLink = false;
       })
       .addCase(deleteLink.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
+        state.loading.deleteLink = false;
       })
-      .addCase(editeLink.pending, (state) => {
-        state.loading = true;
+      .addCase(editLink.pending, (state) => {
+        state.loading.editLink = true;
         state.error = null;
       })
-      .addCase(editeLink.fulfilled, (state, action) => {
+      .addCase(editLink.fulfilled, (state, action) => {
         const updatedLink = action.payload.data;
         const index = state.items.findIndex(
           (item) => item._id === updatedLink._id
@@ -99,15 +104,15 @@ const slice = createSlice({
           state.items[index] = updatedLink;
         }
         state.error = null;
-        state.loading = false;
+        state.loading.editLink = false;
       })
-      .addCase(editeLink.rejected, (state, action) => {
+      .addCase(editLink.rejected, (state, action) => {
         state.error = action.payload;
-        state.loading = false;
+        state.loading.editLink = false;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.items = [];
-        state.loading = false;
+        state.loading.logOut = false;
         state.error = null;
       }),
 });

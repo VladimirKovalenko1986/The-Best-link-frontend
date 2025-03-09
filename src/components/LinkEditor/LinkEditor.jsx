@@ -2,13 +2,17 @@ import TitleLink from "../TitleLink/TitleLink.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { addLink } from "../../redux/links/operations.js";
-import { selectLoading, selectError } from "../../redux/links/selectors.js";
+import {
+  selectLoadingAddLink,
+  selectError,
+} from "../../redux/links/selectors.js";
+import FidgetSpinnerLoading from "../FidgetSpinnerLoading/FidgetSpinnerLoading.jsx";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
 import css from "./LinkEditor.module.css";
 
 export default function LinkEditor() {
-  const loading = useSelector(selectLoading);
+  const loadingAddLink = useSelector(selectLoadingAddLink);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
@@ -57,6 +61,7 @@ export default function LinkEditor() {
 
   return (
     <div className={css.conteiner}>
+      {loadingAddLink && <FidgetSpinnerLoading />}
       <TitleLink text="Add new link" />
       <Formik
         initialValues={initialValues}
@@ -152,7 +157,7 @@ export default function LinkEditor() {
             )}
 
             <button type="submit" className={css.btn}>
-              {loading ? "Ading..." : "Add Link"}
+              {loadingAddLink ? "Ading..." : "Add Link"}
             </button>
           </Form>
         )}

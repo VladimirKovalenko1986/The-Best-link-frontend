@@ -67,7 +67,7 @@ export const deleteLink = createAsyncThunk(
   }
 );
 
-export const editeLink = createAsyncThunk(
+export const editLink = createAsyncThunk(
   "editeLink",
   async ({ linkId, linkData }, thunkAPI) => {
     const state = thunkAPI.getState();

@@ -1,6 +1,13 @@
 export const selectLinks = (state) => state.links.items;
 
-export const selectLoading = (state) => state.links.loading;
+export const selectLoadingAllLinks = (state) => state.links.loading.allLinks;
+
+export const selectLoadingAddLink = (state) => state.links.loading.addLink;
+
+export const selectLoadingDeleteLink = (state) =>
+  state.links.loading.deleteLink;
+
+export const selectLoadingEditLink = (state) => state.links.loading.editLink;
 
 export const selectError = (state) => state.links.error;
 

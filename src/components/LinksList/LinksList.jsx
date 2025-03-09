@@ -1,6 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { selectFilter, selectLinks } from "../../redux/links/selectors.js";
+import {
+  selectFilter,
+  selectLinks,
+  selectLoadingAllLinks,
+} from "../../redux/links/selectors.js";
 import LinkItem from "../LinkItem/LinkItem.jsx";
 import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
 import { fetchLinks } from "../../redux/links/operations.js";
@@ -11,7 +15,7 @@ import css from "./LinksList.module.css";
 export default function LinksList() {
   const dispatch = useDispatch();
   const links = useSelector(selectLinks);
-  const loading = useSelector((state) => state.links.loading);
+  const loadingAllLinks = useSelector(selectLoadingAllLinks);
   const filter = useSelector(selectFilter);
 
   useEffect(() => {
@@ -21,7 +25,7 @@ export default function LinksList() {
 
   return (
     <div>
-      {loading && <DiscussLoading />}
+      {loadingAllLinks && <DiscussLoading />}
       <FilterLink />
       <ul className={css.list}>
         {links.map((link) => (

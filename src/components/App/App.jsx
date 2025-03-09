@@ -48,7 +48,7 @@ import SendEmailResetPassword from "../SendEmailResetPassword/SendEmailResetPass
 import { useEffect } from "react";
 import { selectTheme } from "../../redux/theme/selectors.js";
 // import { fetchTasks } from "../../redux/taskOps.js";
-// import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
+import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
 // import FilterRedux from "../FilterRedux/FilterRedux.jsx";
 // import { selectLoading, selectError } from "../../redux/tasksSlice.js";
 
@@ -290,7 +290,7 @@ function App() {
       <Layout>
         <>
           {isRefreshing ? (
-            <b>Refreshing user please wait...</b>
+            <DiscussLoading />
           ) : (
             <Routes>
               <Route path="/" element={<HomePage />} />

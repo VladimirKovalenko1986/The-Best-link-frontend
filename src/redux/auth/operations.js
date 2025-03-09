@@ -152,8 +152,6 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const response = await axios.post("/auth/confirm-oauth", { code });
 
-      console.log("Google login response:", response.data);
-
       // ✅ Переконайся, що дані отримуються правильно
       const user = response.data?.data?.user;
       const accessToken = response.data?.data?.accessToken;

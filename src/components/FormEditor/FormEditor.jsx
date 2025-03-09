@@ -2,20 +2,20 @@ import TitleLink from "../TitleLink/TitleLink.jsx";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
 import {
   selectModalLinkId,
-  selectLoading,
+  selectLoadingEditLink,
   selectError,
 } from "../../redux/links/selectors.js";
-import { editeLink } from "../../redux/links/operations.js";
+import RotatingSquareLoading from "../RotatingSquareLoading/RotatingSquareLoading.jsx";
+import { editLink } from "../../redux/links/operations.js";
 import { closeModal } from "../../redux/links/slice.js";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
 import css from "./FormEditor.module.css";
 
 export default function FormEditor() {
-  const loading = useSelector(selectLoading);
+  const loadingEdit = useSelector(selectLoadingEditLink);
   const error = useSelector(selectError);
   const id = useSelector(selectModalLinkId);
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ export default function FormEditor() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(editeLink({ linkId: id, linkData: values }))
+    dispatch(editLink({ linkId: id, linkData: values }))
       .unwrap()
       .then(() => {
         toast.success("You have successfully edite link!");
@@ -79,7 +79,7 @@ export default function FormEditor() {
   return (
     <div className={css.conteiner}>
       <TitleLink text="Edite link" />
-      {loading && <DiscussLoading />}
+      {loadingEdit && <RotatingSquareLoading />}
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -174,7 +174,7 @@ export default function FormEditor() {
             )}
 
             <button type="submit" className={css.btn}>
-              {loading ? "Editeng..." : "Edit"}
+              {loadingEdit ? "Editeng..." : "Edit"}
             </button>
           </Form>
         )}
