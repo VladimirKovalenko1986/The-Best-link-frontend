@@ -4,12 +4,16 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "../../redux/auth/operations.js";
-import { selectLoading, selectError } from "../../redux/auth/selector.js";
+import { registration } from "../../redux/auth/operations.js";
+import {
+  selectLoadingRegistration,
+  selectError,
+} from "../../redux/auth/selector.js";
+import FallingLinesLoading from "../FallingLinesLoading/FallingLinesLoading.jsx";
 import css from "./RegistrationForm.module.css";
 
 export default function RegistrationForm() {
-  const loading = useSelector(selectLoading);
+  const loadingRegistration = useSelector(selectLoadingRegistration);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
@@ -36,7 +40,7 @@ export default function RegistrationForm() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(register(values))
+    dispatch(registration(values))
       .unwrap()
       .then(() => {
         toast.success("You have successfully registered!");
@@ -59,84 +63,91 @@ export default function RegistrationForm() {
   const photoId = useId();
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={userSchema}
-      onSubmit={handleSubmit}
-    >
-      {/* Використовуємо render props для поля фото */}
-      {({ setFieldValue }) => (
-        <Form className={css.form}>
-          {/* Name */}
-          <div className={css.conteiner}>
-            <label className={css.label} htmlFor={userNameId}>
-              Name
-            </label>
-            <Field
-              className={css.input}
-              id={userNameId}
-              name="name"
-              type="text"
-            />
-            <ErrorMessage className={css.error} name="name" component="div" />
-          </div>
-          {/* Email */}
-          <div className={css.conteiner}>
-            <label className={css.label} htmlFor={emailId}>
-              Email
-            </label>
-            <Field
-              className={css.input}
-              id={emailId}
-              name="email"
-              type="email"
-            />
-            <ErrorMessage className={css.error} name="email" component="div" />
-          </div>
-          {/* Password */}
-          <div className={css.conteiner}>
-            <label className={css.label} htmlFor={passwordId}>
-              Password
-            </label>
-            <Field
-              className={css.input}
-              id={passwordId}
-              name="password"
-              type="password"
-            />
-            <ErrorMessage
-              className={css.error}
-              name="password"
-              component="div"
-            />
-          </div>
-          {/* Photo (файл) */}
-          <div className={css.conteiner}>
-            <label className={css.label} htmlFor={photoId}>
-              Photo
-            </label>
-            <input
-              id={photoId}
-              name="photo"
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={(event) => {
-                const file = event.currentTarget.files[0];
-                setFieldValue("photo", file);
-              }}
-            />
-          </div>
-          {error && (
-            <p className={css.error}>
-              Ooops! There was an error! Please reload!
-            </p>
-          )}
-          <button className={css.btn} type="submit">
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </Form>
-      )}
-    </Formik>
+    <div>
+      {loadingRegistration && <FallingLinesLoading />}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={userSchema}
+        onSubmit={handleSubmit}
+      >
+        {/* Використовуємо render props для поля фото */}
+        {({ setFieldValue }) => (
+          <Form className={css.form}>
+            {/* Name */}
+            <div className={css.conteiner}>
+              <label className={css.label} htmlFor={userNameId}>
+                Name
+              </label>
+              <Field
+                className={css.input}
+                id={userNameId}
+                name="name"
+                type="text"
+              />
+              <ErrorMessage className={css.error} name="name" component="div" />
+            </div>
+            {/* Email */}
+            <div className={css.conteiner}>
+              <label className={css.label} htmlFor={emailId}>
+                Email
+              </label>
+              <Field
+                className={css.input}
+                id={emailId}
+                name="email"
+                type="email"
+              />
+              <ErrorMessage
+                className={css.error}
+                name="email"
+                component="div"
+              />
+            </div>
+            {/* Password */}
+            <div className={css.conteiner}>
+              <label className={css.label} htmlFor={passwordId}>
+                Password
+              </label>
+              <Field
+                className={css.input}
+                id={passwordId}
+                name="password"
+                type="password"
+              />
+              <ErrorMessage
+                className={css.error}
+                name="password"
+                component="div"
+              />
+            </div>
+            {/* Photo (файл) */}
+            <div className={css.conteiner}>
+              <label className={css.label} htmlFor={photoId}>
+                Photo
+              </label>
+              <input
+                id={photoId}
+                name="photo"
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={(event) => {
+                  const file = event.currentTarget.files[0];
+                  setFieldValue("photo", file);
+                }}
+              />
+            </div>
+            {error && (
+              <p className={css.error}>
+                Ooops! There was an error! Please reload!
+              </p>
+            )}
+            <button className={css.btn} type="submit">
+              {loadingRegistration ? "Registering..." : "Register"}
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 }

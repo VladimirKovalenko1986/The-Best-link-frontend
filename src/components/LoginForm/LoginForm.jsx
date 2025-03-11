@@ -3,12 +3,13 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useId } from "react";
-import { selectLoading, selectError } from "../../redux/auth/selector.js";
-import css from "./LoginForm.module.css";
+import { selectLoadingLogin, selectError } from "../../redux/auth/selector.js";
 import { logIn } from "../../redux/auth/operations.js";
+import HourglassLoading from "../HourglassLoading/HourglassLoading.jsx";
+import css from "./LoginForm.module.css";
 
 export default function LoginForm() {
-  const loading = useSelector(selectLoading);
+  const loadingLogin = useSelector(selectLoadingLogin);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
 
@@ -45,50 +46,55 @@ export default function LoginForm() {
   const passwordId = useId();
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={userSchema}
-    >
-      <Form className={css.form}>
-        <div className={css.conteiner}>
-          <label className={css.label} htmlFor={emailId}>
-            Email
-          </label>
-          <Field
-            className={css.input}
-            type="email"
-            name="email"
-            id={emailId}
-            autoComplete="off"
-          />
-          <ErrorMessage name="email" component="span" className={css.error} />
-        </div>
+    <div>
+      {loadingLogin && <HourglassLoading />}
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={userSchema}
+      >
+        <Form className={css.form}>
+          <div className={css.conteiner}>
+            <label className={css.label} htmlFor={emailId}>
+              Email
+            </label>
+            <Field
+              className={css.input}
+              type="email"
+              name="email"
+              id={emailId}
+              autoComplete="off"
+            />
+            <ErrorMessage name="email" component="span" className={css.error} />
+          </div>
 
-        <div className={css.conteiner}>
-          <label className={css.label} htmlFor={passwordId}>
-            password
-          </label>
-          <Field
-            className={css.input}
-            type="password"
-            name="password"
-            id={passwordId}
-            autoComplete="off"
-          />
-          <ErrorMessage
-            name="password"
-            component="span"
-            className={css.error}
-          />
-        </div>
-        {error && (
-          <p className={css.error}>Ooops! There was an error! Please reload!</p>
-        )}
-        <button type="submit" className={css.btn}>
-          {loading ? "Loading in user..." : "Sign in user"}
-        </button>
-      </Form>
-    </Formik>
+          <div className={css.conteiner}>
+            <label className={css.label} htmlFor={passwordId}>
+              password
+            </label>
+            <Field
+              className={css.input}
+              type="password"
+              name="password"
+              id={passwordId}
+              autoComplete="off"
+            />
+            <ErrorMessage
+              name="password"
+              component="span"
+              className={css.error}
+            />
+          </div>
+          {error && (
+            <p className={css.error}>
+              Ooops! There was an error! Please reload!
+            </p>
+          )}
+          <button type="submit" className={css.btn}>
+            {loadingLogin ? "Loading in user..." : "Sign in user"}
+          </button>
+        </Form>
+      </Formik>
+    </div>
   );
 }

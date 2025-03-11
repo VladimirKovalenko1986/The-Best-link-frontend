@@ -1,7 +1,7 @@
 import TitleLink from "../../components/TitleLink/TitleLink.jsx";
 import LoginForm from "../../components/LoginForm/LoginForm.jsx";
 import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import { Suspense } from "react";
 import { useEffect } from "react";
@@ -16,11 +16,9 @@ export default function LoginPage() {
     dispatch(fetchGoogleOAuthUrl());
   }, [dispatch]);
 
-  const loading = useSelector((state) => state.auth.loading);
   return (
     <div>
       <TitleLink text="Sign in to your account! " />
-      {loading && <DiscussLoading />}
       <LoginForm />
       <RegistrationGoogle />
       <div className={css.conteiner}>

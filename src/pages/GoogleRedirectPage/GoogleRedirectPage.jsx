@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { loginWithGoogle } from "../../redux/auth/operations.js";
 import { toast } from "react-toastify";
 import { selectIsLoggedIn, selectUser } from "../../redux/auth/selector.js";
+import ProgressBarLoading from "../../components/ProgressBarLoading/ProgressBarLoading.jsx";
 
 export default function GoogleRedirectPage() {
   const dispatch = useDispatch();
@@ -48,5 +49,5 @@ export default function GoogleRedirectPage() {
     }
   }, [isLoggedIn, user, navigate]);
 
-  return <p>Logging in with Google...</p>;
+  return <ProgressBarLoading />;
 }

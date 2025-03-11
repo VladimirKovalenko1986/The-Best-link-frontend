@@ -4,7 +4,18 @@ export const selectIsRefreshing = (state) => state.auth.isRefreshing;
 
 export const selectUser = (state) => state.auth.user;
 
-export const selectLoading = (state) => state.auth.loading;
+export const selectLoadingRegistration = (state) =>
+  state.auth.loading.registration;
+
+export const selectLoadingLogout = (state) => state.auth.loading.logout;
+
+export const selectLoadingResetPassword = (state) =>
+  state.auth.loading.resetPassword;
+
+export const selectLoadingLogin = (state) => state.auth.loading.login;
+
+export const selectLoadingregistrationGoogle = (state) =>
+  state.auth.loading.registrationGoogle;
 
 export const selectError = (state) => state.auth.error;
 

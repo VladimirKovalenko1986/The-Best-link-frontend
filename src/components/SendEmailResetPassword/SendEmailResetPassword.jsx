@@ -3,13 +3,14 @@ import * as Yup from "yup";
 import { useId } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import css from "./SedEmailResetPassword.module.css";
-import { selectLoading } from "../../redux/auth/selector.js";
+import { selectLoadingResetPassword } from "../../redux/auth/selector.js";
 import { sendEmailResetPassword } from "../../redux/auth/operations.js";
+import TriangleLoading from "../TriangleLoading/TriangleLoading.jsx";
+import css from "./SedEmailResetPassword.module.css";
 
 export default function SendEmailResetPassword() {
   const dispatch = useDispatch();
-  const loading = useSelector(selectLoading);
+  const loadingResetPassword = useSelector(selectLoadingResetPassword);
 
   const emailSchema = Yup.object().shape({
     email: Yup.string().email("Must be a valid email!").required("Required"),
@@ -55,9 +56,9 @@ export default function SendEmailResetPassword() {
               <button
                 className={css.btn}
                 type="submit"
-                disabled={loading || isSubmitting}
+                disabled={loadingResetPassword || isSubmitting}
               >
-                {loading ? "Sending..." : "Send"}
+                {loadingResetPassword ? "Sending..." : "Send"}
               </button>
               <ErrorMessage
                 className={css.error}
@@ -66,6 +67,7 @@ export default function SendEmailResetPassword() {
               />
             </div>
           </div>
+          {loadingResetPassword && <TriangleLoading />}
         </Form>
       )}
     </Formik>

@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { selectLoading } from "../../redux/auth/selector.js";
+import { selectLoadingResetPassword } from "../../redux/auth/selector.js";
 import { resetPassword } from "../../redux/auth/operations.js";
 import { useId } from "react";
-import DiscussLoading from "../../components/DiscussLoading/DiscussLoading.jsx";
+import TriangleLoading from "../../components/TriangleLoading/TriangleLoading.jsx";
 import css from "./PageResetPassword.module.css";
 
 export default function PageResetPassword() {
@@ -14,7 +14,7 @@ export default function PageResetPassword() {
   const token = searchParams.get("token");
   const dispatch = useDispatch();
   const passwordId = useId();
-  const loading = useSelector(selectLoading);
+  const loadingResetPassword = useSelector(selectLoadingResetPassword);
   const navigate = useNavigate();
 
   const passwordSchema = Yup.object().shape({
@@ -37,13 +37,14 @@ export default function PageResetPassword() {
         navigate("/login");
       })
       .catch((err) => {
+        console.log(err);
         toast.error(`A registration error has occurred: ${err}`);
       });
   };
 
   return (
     <div>
-      {loading && <DiscussLoading />}
+      {loadingResetPassword && <TriangleLoading />}
       <Formik
         initialValues={initialValues}
         validationSchema={passwordSchema}
@@ -65,9 +66,9 @@ export default function PageResetPassword() {
                 <button
                   className={css.btn}
                   type="submit"
-                  disabled={loading || isSubmitting}
+                  disabled={loadingResetPassword || isSubmitting}
                 >
-                  {loading ? "Sending..." : "Send"}
+                  {loadingResetPassword ? "Sending..." : "Send"}
                 </button>
                 <ErrorMessage
                   className={css.error}

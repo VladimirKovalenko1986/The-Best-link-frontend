@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import css from "./UserMenu.module.css";
-import { selectLoading, selectUser } from "../../redux/auth/selector.js";
+import { selectLoadingLogout, selectUser } from "../../redux/auth/selector.js";
 import { logOut } from "../../redux/auth/operations.js";
+import InfinitySpinLoading from "../InfinitySpinLoading/InfinitySpinLoading.jsx";
+import css from "./UserMenu.module.css";
 
 export default function UserMenu() {
-  const loading = useSelector(selectLoading);
+  const loadingLogout = useSelector(selectLoadingLogout);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const { photo, name } = user;
@@ -18,14 +19,14 @@ export default function UserMenu() {
   };
 
   if (!user || !user.email) {
-    return <p>Loading...</p>; // ✅ Показуємо "Loading..." поки немає даних
+    return <InfinitySpinLoading />;
   }
   return (
     <div className={css.conteiner}>
       <img className={css.img} src={userPhoto} alt="photo user" />
       <b>Welcom, {name}!</b>
       <button className={css.btn} onClick={handleLogout}>
-        {loading ? "Logout in user..." : "Logout"}
+        {loadingLogout ? "Logout in user..." : "Logout"}
       </button>
     </div>
   );

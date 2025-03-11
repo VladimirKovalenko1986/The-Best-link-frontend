@@ -1,4 +1,4 @@
-import Hourglass from "react-loader-spinner";
+import { Hourglass } from "react-loader-spinner";
 
 export default function HourglassLoading() {
   return (

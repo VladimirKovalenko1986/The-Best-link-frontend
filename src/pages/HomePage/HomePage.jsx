@@ -1,9 +1,14 @@
-import css from "./HomePage.module.css";
+import { useSelector } from "react-redux";
+import { selectLoadingLogout } from "../../redux/auth/selector.js";
+import InfinitySpinLoading from "../../components/InfinitySpinLoading/InfinitySpinLoading.jsx";
 import TitleLink from "../../components/TitleLink/TitleLink.jsx";
+import css from "./HomePage.module.css";
 
 export default function HomePage() {
+  const loadingLogout = useSelector(selectLoadingLogout);
   return (
     <div>
+      {loadingLogout && <InfinitySpinLoading />}
       <TitleLink text="The Best Links" />
       <p className={css.text}>
         The Best Links – a collection of my most amazing programming resources!

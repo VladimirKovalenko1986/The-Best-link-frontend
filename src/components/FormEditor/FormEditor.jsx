@@ -59,7 +59,7 @@ export default function FormEditor() {
     dispatch(editLink({ linkId: id, linkData: values }))
       .unwrap()
       .then(() => {
-        toast.success("You have successfully edite link!");
+        toast.success("You have successfully edit link!");
         actions.resetForm();
         fileInputRef.current.value = "";
         handleClose();
