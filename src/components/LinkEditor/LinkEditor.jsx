@@ -1,6 +1,7 @@
 import TitleLink from "../TitleLink/TitleLink.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toast } from "react-toastify";
 import { addLink } from "../../redux/links/operations.js";
 import {
   selectLoadingAddLink,
@@ -49,7 +50,15 @@ export default function LinkEditor() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(addLink(values));
+    dispatch(addLink(values))
+      .unwrap()
+      .then(() => {
+        toast.success("Add new link!");
+        actions.resetForm();
+      })
+      .catch((err) => {
+        toast.error(`Link not add: ${err}`);
+      });
     actions.resetForm();
   };
 
