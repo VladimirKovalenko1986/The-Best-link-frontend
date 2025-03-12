@@ -31,17 +31,17 @@ export default function FormEditor() {
 
     link: Yup.string()
       .min(5, "Too Short!")
-      .max(100, "Too Long!")
+      .max(200, "Too Long!")
       .required("Required"),
 
     nameLink: Yup.string()
       .min(5, "Too Short!")
-      .max(100, "Too Long!")
+      .max(200, "Too Long!")
       .required("Required"),
 
     textLink: Yup.string()
       .min(5, "Too Short!")
-      .max(100, "Too Long!")
+      .max(200, "Too Long!")
       .required("Required"),
 
     poster: Yup.string().notRequired(),
