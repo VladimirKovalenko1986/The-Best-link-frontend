@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import css from "./LoadeMoreButton.module.css";
 import {
   selectCurrentPage,
   selectFilter,
   selectHasNextPage,
   selectLinks,
+  selectLoadingAllLinks,
 } from "../../redux/links/selectors.js";
 import { setPage } from "../../redux/links/slice.js";
 import { fetchLinks } from "../../redux/links/operations.js";
+import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
+import css from "./LoadeMoreButton.module.css";
 
 export default function LoadeMoreButton() {
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ export default function LoadeMoreButton() {
   const hasNextPage = useSelector(selectHasNextPage);
   const filter = useSelector(selectFilter);
   const links = useSelector(selectLinks);
+  const loadeAllLinks = useSelector(selectLoadingAllLinks);
 
   const handleLoadeMore = () => {
     const nextPage = currentPage + 1;
@@ -26,7 +29,7 @@ export default function LoadeMoreButton() {
     hasNextPage &&
     links.length > 0 && (
       <button className={css.btn} onClick={handleLoadeMore}>
-        Loade More
+        {loadeAllLinks ? <DiscussLoading /> : "Load More"}
       </button>
     )
   );
