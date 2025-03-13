@@ -29,7 +29,8 @@ export default function LoadeMoreButton() {
     hasNextPage &&
     links.length > 0 && (
       <button className={css.btn} onClick={handleLoadeMore}>
-        {loadeAllLinks ? <DiscussLoading /> : "Load More"}
+        Load More
+        {loadeAllLinks && <span className={css.spinner}></span>}
       </button>
     )
   );
