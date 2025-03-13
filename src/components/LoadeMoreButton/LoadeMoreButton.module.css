@@ -1,11 +1,22 @@
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
 .btn {
-  text-transform: uppercase;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #1d4ed8;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: rgb(0, 221, 255);
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
@@ -18,21 +29,15 @@
   cursor: not-allowed;
 }
 
-.spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #ffffff;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+.spinnerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+.spinnerWrapper > div {
+  width: 24px;
+  height: 24px;
 }
