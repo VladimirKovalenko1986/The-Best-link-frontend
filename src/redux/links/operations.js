@@ -11,6 +11,7 @@ export const fetchLinks = createAsyncThunk(
       const response = await axios.get(`/links`, {
         params: { page, limit, nameType: filter },
       });
+      console.log(response.data);
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -6,23 +6,32 @@ import {
   selectModalLinkId,
   selectLoadingEditLink,
   selectError,
+  selectLinks,
 } from "../../redux/links/selectors.js";
 import RotatingSquareLoading from "../RotatingSquareLoading/RotatingSquareLoading.jsx";
 import { editLink } from "../../redux/links/operations.js";
 import { closeModal } from "../../redux/links/slice.js";
 import * as Yup from "yup";
-import { useId, useRef } from "react";
+import { useId, useRef, useMemo } from "react";
 import css from "./FormEditor.module.css";
 
 export default function FormEditor() {
   const loadingEdit = useSelector(selectLoadingEditLink);
   const error = useSelector(selectError);
   const id = useSelector(selectModalLinkId);
+  const links = useSelector(selectLinks);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
+
   const handleClose = () => {
     dispatch(closeModal());
   };
+
+  // Знаходимо поточний лінк за id
+  const currentLink = useMemo(
+    () => links.find((link) => link._id === id),
+    [links, id]
+  );
 
   const addLinkSchema = Yup.object().shape({
     nameType: Yup.string()
@@ -44,30 +53,32 @@ export default function FormEditor() {
       .max(200, "Too Long!")
       .required("Required"),
 
-    poster: Yup.string().notRequired(),
+    poster: Yup.mixed().notRequired(),
   });
 
-  const initialValues = {
-    nameType: "HTML&CSS",
-    link: "",
-    nameLink: "",
-    textLink: "",
-    poster: "",
-  };
+  const initialValues = useMemo(
+    () => ({
+      nameType: currentLink?.nameType || "HTML&CSS",
+      link: currentLink?.link || "",
+      nameLink: currentLink?.nameLink || "",
+      textLink: currentLink?.textLink || "",
+      poster: "",
+    }),
+    [currentLink]
+  );
 
   const handleSubmit = (values, actions) => {
     dispatch(editLink({ linkId: id, linkData: values }))
       .unwrap()
       .then(() => {
-        toast.success("You have successfully edit link!");
+        toast.success("You have successfully edited the link!");
         actions.resetForm();
         fileInputRef.current.value = "";
         handleClose();
       })
       .catch((err) => {
-        toast.error(`Edite in not correct: ${err}`);
+        toast.error(`Edit is not correct: ${err}`);
       });
-    actions.resetForm();
   };
 
   const nameTypeId = useId();
@@ -78,9 +89,10 @@ export default function FormEditor() {
 
   return (
     <div className={css.conteiner}>
-      <TitleLink text="Edite link" />
+      <TitleLink text="Edit Link" />
       {loadingEdit && <RotatingSquareLoading />}
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={addLinkSchema}
@@ -89,7 +101,7 @@ export default function FormEditor() {
           <Form className={css.form}>
             <div className={css.wrapper}>
               <label className={css.label} htmlFor={nameTypeId}>
-                nameType:{" "}
+                Name Type:
               </label>
               <Field as="select" name="nameType" id={nameTypeId}>
                 <option value="HTML&CSS">HTML&CSS</option>
@@ -102,7 +114,7 @@ export default function FormEditor() {
 
             <div className={css.wrapper}>
               <label className={css.label} htmlFor={linkId}>
-                link:{" "}
+                Link:
               </label>
               <Field
                 type="text"
@@ -119,7 +131,7 @@ export default function FormEditor() {
 
             <div className={css.wrapper}>
               <label className={css.label} htmlFor={nameLinkId}>
-                nameLink:{" "}
+                Name Link:
               </label>
               <Field
                 type="text"
@@ -136,7 +148,7 @@ export default function FormEditor() {
 
             <div className={css.wrapper}>
               <label className={css.label} htmlFor={textLinkId}>
-                textLink:{" "}
+                Text Link:
               </label>
               <Field
                 type="text"
@@ -167,6 +179,7 @@ export default function FormEditor() {
                 }}
               />
             </div>
+
             {error && (
               <p className={css.error}>
                 Ooops! There was an error! Please reload!
@@ -174,7 +187,7 @@ export default function FormEditor() {
             )}
 
             <button type="submit" className={css.btn}>
-              {loadingEdit ? "Editeng..." : "Edit"}
+              {loadingEdit ? "Editing..." : "Edit"}
             </button>
           </Form>
         )}
