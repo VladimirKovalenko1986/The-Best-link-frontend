@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { setToken, clearToken } from "./slice.js";
 
 axios.defaults.baseURL = "https://the-best-link-backend.onrender.com";
 axios.defaults.withCredentials = true;
@@ -71,38 +72,32 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
-    const reduxState = thunkAPI.getState();
-    const savedToken = reduxState.auth.token;
-
-    if (!savedToken) {
-      return thunkAPI.rejectWithValue("No token found");
-    }
-
     try {
-      // ✅ Встановлюємо старий токен для запиту оновлення сесії
-      setAuthHeader(savedToken);
-
-      const response = await axios.post("/auth/refresh");
+      const response = await axios.post(
+        "/auth/refresh",
+        {},
+        { withCredentials: true }
+      );
 
       const newAccessToken = response.data.data.accessToken;
 
-      // ✅ Оновлюємо `Authorization` заголовок
+      // ✅ Оновлюємо токен у Redux
+      thunkAPI.dispatch(setToken(newAccessToken));
+
+      // ✅ Оновлюємо заголовок авторизації
       setAuthHeader(newAccessToken);
 
-      return response.data;
+      return { token: newAccessToken, user: response.data.data.user };
     } catch (error) {
-      // ❌ Якщо токен протух — видаляємо його
-      clearAuthHeader();
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Session expired"
-      );
+      console.log("Failed to refresh token:", error);
+      thunkAPI.dispatch(clearToken());
+      return thunkAPI.rejectWithValue("Session expired");
     }
   },
   {
-    condition(_, thunkAPI) {
-      const reduxState = thunkAPI.getState();
-      const savedToken = reduxState.auth.token;
-      return !!savedToken; // Перетворюємо `null` в `false`
+    condition: (_, { getState }) => {
+      const { auth } = getState();
+      return !!auth.token; // Виконуємо refresh тільки якщо токен є
     },
   }
 );

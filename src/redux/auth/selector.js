@@ -24,3 +24,5 @@ export const selectMessage = (state) => state.auth.message;
 export const selectResetPassword = (state) => state.auth.resetPassword;
 
 export const selectPassword = (state) => state.auth.password;
+
+export const selectToken = (state) => state.auth.token;

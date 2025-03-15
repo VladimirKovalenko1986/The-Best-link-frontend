@@ -32,7 +32,7 @@ const slice = createSlice({
     closeModal: (state) => {
       state.modal.isOpen = false;
       state.modal.modalLinkId = null;
-      state.modalType = null;
+      state.modal.modalType = null;
     },
     setPage: (state, action) => {
       state.currentPage = action.payload;
@@ -112,7 +112,12 @@ const slice = createSlice({
       })
       .addCase(logOut.fulfilled, (state) => {
         state.items = [];
-        state.loading.logOut = false;
+        state.loading = {
+          allLinks: false,
+          addLink: false,
+          deleteLink: false,
+          editLink: false,
+        };
         state.error = null;
       }),
 });

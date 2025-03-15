@@ -24,7 +24,7 @@ export default function FilterLink() {
   const nameTypeId = useId();
   return (
     <div>
-      {loadingDeleteLink && <RevolvingDotLoading />}
+      {/* {loadingDeleteLink && <RevolvingDotLoading />} */}
       <Formik>
         <Form className={css.form}>
           <label className={css.label}>Filter NameType</label>

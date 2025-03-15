@@ -2,21 +2,24 @@ import TitleLink from "../TitleLink/TitleLink.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-import { addLink } from "../../redux/links/operations.js";
+import { addLink, fetchLinks } from "../../redux/links/operations.js";
 import {
   selectLoadingAddLink,
   selectError,
+  selectFilter,
 } from "../../redux/links/selectors.js";
 import FidgetSpinnerLoading from "../FidgetSpinnerLoading/FidgetSpinnerLoading.jsx";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
 import css from "./LinkEditor.module.css";
+import { setPage } from "../../redux/links/slice.js";
 
 export default function LinkEditor() {
   const loadingAddLink = useSelector(selectLoadingAddLink);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const fileInputRef = useRef("");
+  const filter = useSelector(selectFilter);
 
   const addLinkSchema = Yup.object().shape({
     nameType: Yup.string()
@@ -65,7 +68,13 @@ export default function LinkEditor() {
       .unwrap()
       .then(() => {
         toast.success("Add new link!");
+        dispatch(setPage(1));
+
+        dispatch(fetchLinks({ page: 1, limit: 10, filter }));
+
+        // Очищуємо форму
         actions.resetForm();
+        fileInputRef.current.value = ""; // Очищення інпуту файлу
       })
       .catch((err) => {
         toast.error(`Link not add: ${err}`);

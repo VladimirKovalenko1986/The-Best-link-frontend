@@ -29,6 +29,16 @@
   pointer-events: auto; /* ✅ Дозволяє клікати тільки по модалці */
   height: 100px;
 }
+.spiner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+}
 
 .btnClose {
   border-radius: 50%;

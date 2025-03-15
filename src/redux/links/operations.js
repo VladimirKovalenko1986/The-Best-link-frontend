@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { refreshUser } from "../auth/operations.js";
+import { setAuthHeader } from "../auth/operations.js";
 
 axios.defaults.baseURL = "https://the-best-link-backend.onrender.com";
 axios.defaults.withCredentials = true;
@@ -23,34 +25,59 @@ export const addLink = createAsyncThunk(
   "addLink",
   async (linkData, thunkAPI) => {
     const state = thunkAPI.getState();
-    const token = state.auth.token; // ✅ Отримуємо токен з Redux
+    let token = state.auth.token;
 
     if (!token) {
       return thunkAPI.rejectWithValue("No access token available");
     }
 
-    try {
-      // 1. Створюємо FormData
-      const formData = new FormData();
+    const formData = new FormData();
+    formData.append("nameType", linkData.nameType);
+    formData.append("link", linkData.link);
+    formData.append("nameLink", linkData.nameLink);
+    formData.append("textLink", linkData.textLink);
 
-      // 2. Додаємо поля (текстові)
-      formData.append("nameType", linkData.nameType);
-      formData.append("link", linkData.link);
-      formData.append("nameLink", linkData.nameLink);
-      formData.append("textLink", linkData.textLink);
-      // 3. Якщо є файл, додаємо
-      if (linkData.poster) {
-        formData.append("poster", linkData.poster);
-      }
+    if (linkData.poster) {
+      formData.append("poster", linkData.poster);
+    }
+
+    try {
+      // Спроба виконати запит
       const response = await axios.post("/links", formData, {
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // ✅ Додаємо `Authorization`
         },
-        withCredentials: true, // ✅ Передаємо cookies
+        withCredentials: true,
       });
+
       return response.data;
     } catch (error) {
+      // Якщо отримано 401 - оновлюємо токен і повторюємо запит
+      if (error.response?.status === 401) {
+        try {
+          const refreshResult = await thunkAPI.dispatch(refreshUser()).unwrap();
+          token = refreshResult.token;
+
+          // Оновлюємо Authorization Header
+          setAuthHeader(token);
+
+          // Повторний запит з новим токеном
+          const retryResponse = await axios.post("/links", formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+          });
+
+          return retryResponse.data;
+        } catch (refreshError) {
+          console.log(refreshError);
+          return thunkAPI.rejectWithValue("Token refresh failed");
+        }
+      }
+
       return thunkAPI.rejectWithValue(error.message);
     }
   }
