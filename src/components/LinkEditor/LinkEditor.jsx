@@ -20,7 +20,18 @@ export default function LinkEditor() {
 
   const addLinkSchema = Yup.object().shape({
     nameType: Yup.string()
-      .oneOf(["HTML&CSS", "JS", "React", "TS", "Node.js"])
+      .oneOf([
+        "HTML&CSS",
+        "JS",
+        "React",
+        "TS",
+        "Node.js",
+        "Video/HTML&CSS",
+        "Video/JS",
+        "Video/React",
+        "Video/TS",
+        "Video/Node.js",
+      ])
       .required("Required"),
 
     link: Yup.string()
@@ -84,11 +95,17 @@ export default function LinkEditor() {
                 nameType:{" "}
               </label>
               <Field as="select" name="nameType" id={nameTypeId}>
+                <option value="">All</option>
                 <option value="HTML&CSS">HTML&CSS</option>
                 <option value="JS">JS</option>
                 <option value="React">React</option>
                 <option value="TS">TS</option>
                 <option value="Node.js">Node.js</option>
+                <option value="Video/HTML&CSS">Video/HTML&CSS</option>
+                <option value="Video/JS">Video/JS</option>
+                <option value="Video/React">Video/React</option>
+                <option value="Video/TS">Video/TS</option>
+                <option value="Video/Node.js">Video/Node.js</option>
               </Field>
             </div>
 
