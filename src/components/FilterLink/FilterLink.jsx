@@ -1,19 +1,14 @@
 import { Formik, Form, Field } from "formik";
 import { useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectFilter,
-  selectLoadingDeleteLink,
-} from "../../redux/links/selectors.js";
+import { selectFilter } from "../../redux/links/selectors.js";
 import { setFilter } from "../../redux/links/slice.js";
 import { fetchLinks } from "../../redux/links/operations.js";
-import RevolvingDotLoading from "../RevolvingDotLoading/RevolvingDotLoading.jsx";
 import css from "./FilterLink.module.css";
 
 export default function FilterLink() {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
-  const loadingDeleteLink = useSelector(selectLoadingDeleteLink);
 
   const handleFilterChange = (e) => {
     const value = e.target.value;

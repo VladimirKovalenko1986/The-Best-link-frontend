@@ -78,26 +78,33 @@ export const refreshUser = createAsyncThunk(
         {},
         { withCredentials: true }
       );
-
       const newAccessToken = response.data.data.accessToken;
+      const user = response.data.data.user;
 
-      // ✅ Оновлюємо токен у Redux
+      if (!newAccessToken || !user) {
+        throw new Error("Token or user data is missing in refresh response");
+      }
+
+      // Оновлюємо токен у заголовках axios
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${newAccessToken}`;
+
+      // Оновлюємо токен у Redux
       thunkAPI.dispatch(setToken(newAccessToken));
 
-      // ✅ Оновлюємо заголовок авторизації
-      setAuthHeader(newAccessToken);
-
-      return { token: newAccessToken, user: response.data.data.user };
+      return { token: newAccessToken, user };
     } catch (error) {
-      console.log("Failed to refresh token:", error);
       thunkAPI.dispatch(clearToken());
-      return thunkAPI.rejectWithValue("Session expired");
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Session expired"
+      );
     }
   },
   {
     condition: (_, { getState }) => {
       const { auth } = getState();
-      return !!auth.token; // Виконуємо refresh тільки якщо токен є
+      return !!auth.token;
     },
   }
 );

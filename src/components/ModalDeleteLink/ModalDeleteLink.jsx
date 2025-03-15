@@ -18,7 +18,6 @@ export default function ModalDeleteLink() {
   const id = useSelector(selectModalLinkId);
   const theme = useSelector(selectTheme);
   const loadingDeleteLink = useSelector(selectLoadingDeleteLink);
-  console.log(loadingDeleteLink);
 
   useEffect(() => {
     setModalRoot(document.getElementById("modal-root"));
