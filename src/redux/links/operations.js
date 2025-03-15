@@ -23,15 +23,24 @@ export const fetchLinks = createAsyncThunk(
 export const addLink = createAsyncThunk(
   "addLink",
   async (linkData, thunkAPI) => {
-    let state = thunkAPI.getState();
+    const state = thunkAPI.getState();
     let token = state.auth.token;
+
+    // Спробувати оновити токен перед запитом
+    if (!token) {
+      try {
+        const refreshResult = await thunkAPI.dispatch(refreshUser()).unwrap();
+        token = refreshResult.token;
+      } catch (error) {
+        return thunkAPI.rejectWithValue("Token refresh failed");
+      }
+    }
 
     const formData = new FormData();
     formData.append("nameType", linkData.nameType);
     formData.append("link", linkData.link);
     formData.append("nameLink", linkData.nameLink);
     formData.append("textLink", linkData.textLink);
-
     if (linkData.poster) {
       formData.append("poster", linkData.poster);
     }
@@ -42,30 +51,11 @@ export const addLink = createAsyncThunk(
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
 
       return response.data;
     } catch (error) {
-      if (error.response?.status === 401) {
-        try {
-          const refreshResult = await thunkAPI.dispatch(refreshUser()).unwrap();
-          token = refreshResult.token;
-
-          // Повторний запит після оновлення токена
-          const retryResponse = await axios.post("/links", formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          });
-
-          return retryResponse.data;
-        } catch (refreshError) {
-          console.log(refreshError);
-          return thunkAPI.rejectWithValue("Token refresh failed");
-        }
-      }
-
       return thunkAPI.rejectWithValue(error.message);
     }
   }

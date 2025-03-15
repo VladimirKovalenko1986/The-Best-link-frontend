@@ -76,29 +76,20 @@ export const refreshUser = createAsyncThunk(
       const response = await axios.post(
         "/auth/refresh",
         {},
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
+
       const newAccessToken = response.data.data.accessToken;
-      const user = response.data.data.user;
 
-      if (!newAccessToken || !user) {
-        throw new Error("Token or user data is missing in refresh response");
-      }
-
-      // Оновлюємо токен у заголовках axios
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${newAccessToken}`;
-
-      // Оновлюємо токен у Redux
+      // Зберігаємо новий токен у Redux
       thunkAPI.dispatch(setToken(newAccessToken));
 
-      return { token: newAccessToken, user };
+      return { token: newAccessToken, user: response.data.data.user };
     } catch (error) {
       thunkAPI.dispatch(clearToken());
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Session expired"
-      );
+      return thunkAPI.rejectWithValue("Session expired");
     }
   },
   {
