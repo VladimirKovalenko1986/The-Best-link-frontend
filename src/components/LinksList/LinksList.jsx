@@ -10,6 +10,7 @@ import DiscussLoading from "../DiscussLoading/DiscussLoading.jsx";
 import { fetchLinks } from "../../redux/links/operations.js";
 import { setPage } from "../../redux/links/slice.js";
 import FilterLink from "../FilterLink/FilterLink.jsx";
+import ScrollToTopButton from "../ScrollToTopButton/ScrollToTopButton.jsx";
 import css from "./LinksList.module.css";
 
 export default function LinksList() {
@@ -34,6 +35,7 @@ export default function LinksList() {
           </li>
         ))}
       </ul>
+      <ScrollToTopButton />
     </div>
   );
 }
