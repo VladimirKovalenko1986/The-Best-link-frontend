@@ -70,18 +70,32 @@ export default function LinkEditor() {
       .then(() => {
         toast.success("Add new link!");
         dispatch(setPage(1));
-
         dispatch(fetchLinks({ page: 1, limit: 10, filter }));
 
-        // Очищуємо форму
+        // Очищення форми
         actions.resetForm();
         fileInputRef.current.value = ""; // Очищення інпуту файлу
-        dispatch(refreshUser());
       })
-      .catch((err) => {
-        toast.error(`Link not add: ${err}`);
+      .catch(async (err) => {
+        console.log(err);
+        if (err === "Request failed with status code 401") {
+          try {
+            await dispatch(refreshUser()).unwrap();
+            // Після оновлення токена, повторюємо спробу додати лінк
+            await dispatch(addLink(values)).unwrap();
+            toast.success("Link added after refreshing token!");
+            dispatch(setPage(1));
+            dispatch(fetchLinks({ page: 1, limit: 10, filter }));
+            actions.resetForm();
+            fileInputRef.current.value = "";
+          } catch (refreshError) {
+            console.log(refreshError);
+            toast.error("Session expired. Please login again.");
+          }
+        } else {
+          toast.error(`Link not added: ${err}`);
+        }
       });
-    actions.resetForm();
   };
 
   const nameTypeId = useId();
