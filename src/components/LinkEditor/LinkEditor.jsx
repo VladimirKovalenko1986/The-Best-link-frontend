@@ -11,8 +11,9 @@ import {
 import FidgetSpinnerLoading from "../FidgetSpinnerLoading/FidgetSpinnerLoading.jsx";
 import * as Yup from "yup";
 import { useId, useRef } from "react";
-import css from "./LinkEditor.module.css";
 import { setPage } from "../../redux/links/slice.js";
+import { refreshUser } from "../../redux/auth/operations.js";
+import css from "./LinkEditor.module.css";
 
 export default function LinkEditor() {
   const loadingAddLink = useSelector(selectLoadingAddLink);
@@ -75,6 +76,7 @@ export default function LinkEditor() {
         // Очищуємо форму
         actions.resetForm();
         fileInputRef.current.value = ""; // Очищення інпуту файлу
+        dispatch(refreshUser());
       })
       .catch((err) => {
         toast.error(`Link not add: ${err}`);

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setToken, clearToken } from "./slice.js";
 
 axios.defaults.baseURL = "https://the-best-link-backend.onrender.com";
 axios.defaults.withCredentials = true;
@@ -72,30 +71,38 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
+    const reduxState = thunkAPI.getState();
+    const savedToken = reduxState.auth.token;
+
+    if (!savedToken) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+
     try {
-      const response = await axios.post(
-        "/auth/refresh",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
+      // ✅ Встановлюємо старий токен для запиту оновлення сесії
+      setAuthHeader(savedToken);
+
+      const response = await axios.post("/auth/refresh");
 
       const newAccessToken = response.data.data.accessToken;
 
-      // Зберігаємо новий токен у Redux
-      thunkAPI.dispatch(setToken(newAccessToken));
+      // ✅ Оновлюємо `Authorization` заголовок
+      setAuthHeader(newAccessToken);
 
-      return { token: newAccessToken, user: response.data.data.user };
+      return response.data;
     } catch (error) {
-      thunkAPI.dispatch(clearToken());
-      return thunkAPI.rejectWithValue("Session expired");
+      // ❌ Якщо токен протух — видаляємо його
+      clearAuthHeader();
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Session expired"
+      );
     }
   },
   {
-    condition: (_, { getState }) => {
-      const { auth } = getState();
-      return !!auth.token;
+    condition(_, thunkAPI) {
+      const reduxState = thunkAPI.getState();
+      const savedToken = reduxState.auth.token;
+      return !!savedToken; // Перетворюємо `null` в `false`
     },
   }
 );
@@ -132,6 +139,7 @@ export const fetchGoogleOAuthUrl = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/auth/get-oauth-url");
+      console.log(response.data.data.url);
       return response.data.data.url;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -144,6 +152,8 @@ export const loginWithGoogle = createAsyncThunk(
   async (code, thunkAPI) => {
     try {
       const response = await axios.post("/auth/confirm-oauth", { code });
+
+      console.log("Google login response:", response.data);
 
       // ✅ Переконайся, що дані отримуються правильно
       const user = response.data?.data?.user;
