@@ -10,6 +10,7 @@ import { deleteLink } from "../../redux/links/operations.js";
 import clsx from "clsx";
 import { selectTheme } from "../../redux/theme/selectors.js";
 import RevolvingDotLoading from "../RevolvingDotLoading/RevolvingDotLoading.jsx";
+import { toast } from "react-toastify"; // ✅ Додано імпорт
 import css from "./ModalDeleteLink.module.css";
 
 export default function ModalDeleteLink() {
@@ -32,6 +33,18 @@ export default function ModalDeleteLink() {
 
   if (!modalRoot) return null;
 
+  const handleDelete = () => {
+    dispatch(deleteLink(id))
+      .unwrap()
+      .then(() => {
+        toast.success("Link successfully deleted!");
+        dispatch(closeModal()); // ✅ Закриваємо модалку після видалення
+      })
+      .catch((err) => {
+        toast.error(`Failed to delete link: ${err}`);
+      });
+  };
+
   return createPortal(
     <div className={css.backDrop}>
       <div className={clsx(css.modal, { [css.dark]: theme === "dark" })}>
@@ -39,10 +52,12 @@ export default function ModalDeleteLink() {
           {loadingDeleteLink && <RevolvingDotLoading />}
         </div>
 
-        <p>You definitely want to delete this link?</p>
+        <p>Are you sure you want to delete this link?</p>
+
         <button className={css.btnClose} onClick={() => dispatch(closeModal())}>
           X
         </button>
+
         <div className={css.wrapper}>
           <button
             className={css.btnCancel}
@@ -50,15 +65,13 @@ export default function ModalDeleteLink() {
           >
             Cancel
           </button>
-          <button
-            className={css.btnDelete}
-            onClick={() => dispatch(deleteLink(id))}
-          >
-            Delete
+
+          <button className={css.btnDelete} onClick={handleDelete}>
+            {loadingDeleteLink ? "Deleting..." : "Delete"}
           </button>
         </div>
       </div>
     </div>,
-    document.getElementById("modal-root") // ✅ Модалка рендериться тут
+    modalRoot
   );
 }
