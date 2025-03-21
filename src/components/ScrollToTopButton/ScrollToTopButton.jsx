@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { SlArrowUp } from "react-icons/sl";
-import css from "./ScrollToTopButton.module.css";
+import { useState, useEffect } from 'react';
+import { SlArrowUp } from 'react-icons/sl';
+import css from './ScrollToTopButton.module.css';
 
 export default function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,15 +15,15 @@ export default function ScrollToTopButton() {
       }
     };
 
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
   // Функція для скролу вгору
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
